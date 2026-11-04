@@ -3,9 +3,10 @@ import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/state.dart';
 import 'package:fl_clash/views/proxies/card.dart';
+import 'package:fl_clash/widgets/widgets.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:material_ui/material_ui.dart';
 
 import '../helpers/test_app.dart';
 import '../helpers/test_profiles.dart';
@@ -50,7 +51,7 @@ void main() {
       UncontrolledProviderScope(
         container: container,
         child: TestApp(
-          homeBuilder: (child) => Scaffold(body: child),
+          homeBuilder: (child) => Scaffold(title: 'test', body: child),
           child: SizedBox(
             height: 120,
             child: ProxyCard(
@@ -68,7 +69,7 @@ void main() {
   }
 
   Finder pinnedMark() => find.byWidgetPredicate(
-    (widget) => widget is Tooltip && (widget.message ?? '').contains(_pinnedIp),
+    (widget) => widget is Tooltip && widget.message.contains(_pinnedIp),
   );
 
   testWidgets('marks the node of a pinned entrance', (tester) async {

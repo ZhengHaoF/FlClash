@@ -4,8 +4,8 @@ import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/ui/icons/icons.dart';
 import 'package:fl_clash/widgets/widgets.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:material_ui/material_ui.dart';
 
 class CfOptimizeView extends ConsumerStatefulWidget {
   const CfOptimizeView({super.key});
@@ -486,7 +486,7 @@ class _CfOptimizeViewState extends ConsumerState<CfOptimizeView> {
       ),
     ];
 
-    return CommonScaffold(
+    return Scaffold(
       title: appLocalizations.cfOptimize,
       body: Builder(
         builder: (context) => ListView.builder(
