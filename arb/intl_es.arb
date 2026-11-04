@@ -995,5 +995,11 @@
   "cfMatchedFilter": "{count} coinciden",
   "cfOutsideRangesTip": "Estos dominios se resuelven fuera de los rangos de Cloudflare, así que la entrada fijada podría no servirlos: {domains}. ¿Aplicar igualmente?",
   "cfUndetectedTip": "Estos dominios aún no se han detectado, nada confirma que los sirva Cloudflare: {domains}. ¿Aplicar igualmente?",
-  "pinnedEntryTip": "Este nodo se conecta a una IP de entrada fijada: {ip}"
+  "pinnedEntryTip": "Este nodo se conecta a una IP de entrada fijada: {ip}",
+  "cfRanges": "Rangos de Cloudflare",
+  "cfRangesCount": "{count} rangos",
+  "cfRangesUpdate": "Actualizar rangos",
+  "cfRangesUpdating": "Actualizando…",
+  "cfRangesBuiltIn": "Rangos integrados; aún sin actualizar desde Cloudflare",
+  "cfRangesUpdatedAt": "Actualizado {time}"
 }

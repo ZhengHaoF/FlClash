@@ -995,5 +995,11 @@
   "cfMatchedFilter": "{count} retenues",
   "cfOutsideRangesTip": "Ces domaines se résolvent hors des plages Cloudflare : une entrée fixée risque de ne pas les servir ({domains}). Appliquer quand même ?",
   "cfUndetectedTip": "Ces domaines n'ont pas encore été détectés : rien ne confirme qu'ils sont servis par Cloudflare ({domains}). Appliquer quand même ?",
-  "pinnedEntryTip": "Ce nœud se connecte à une IP d'entrée fixée : {ip}"
+  "pinnedEntryTip": "Ce nœud se connecte à une IP d'entrée fixée : {ip}",
+  "cfRanges": "Plages Cloudflare",
+  "cfRangesCount": "{count} plages",
+  "cfRangesUpdate": "Mettre à jour les plages",
+  "cfRangesUpdating": "Mise à jour…",
+  "cfRangesBuiltIn": "Plages intégrées ; pas encore mises à jour depuis Cloudflare",
+  "cfRangesUpdatedAt": "Mis à jour {time}"
 }

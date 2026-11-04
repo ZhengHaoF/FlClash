@@ -1,3 +1,4 @@
+import 'package:fl_clash/common/constant.dart';
 import 'package:fl_clash/core/interface.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/cf_optimize.dart';
@@ -213,6 +214,60 @@ proxies:
       expect(cfDomainsNotDetected(const ['fresh.example'], const {}), [
         'fresh.example',
       ]);
+    });
+  });
+
+  group('parseCfRangeList', () {
+    test('keeps the published order and drops duplicates', () {
+      const raw = '''
+173.245.48.0/20
+103.21.244.0/22
+
+173.245.48.0/20
+ 104.16.0.0/13 
+''';
+      expect(parseCfRangeList(raw), [
+        '173.245.48.0/20',
+        '103.21.244.0/22',
+        '104.16.0.0/13',
+      ]);
+    });
+
+    test('drops IPv6 prefixes, since only IPv4 is sampled', () {
+      const raw = '104.16.0.0/13\n2400:cb00::/32\n2606:4700::/32';
+      expect(parseCfRangeList(raw), ['104.16.0.0/13']);
+    });
+
+    test('drops lines the Core would refuse', () {
+      const raw = '''
+not-a-prefix
+104.16.0.0
+104.16.0.0/33
+104.16.0.0/-1
+104.16.0.0/+8
+104.300.0.0/13
+104.16.0.0/13 # tail
+''';
+      expect(parseCfRangeList(raw), isEmpty);
+    });
+
+    test('caps an over-long answer', () {
+      final raw = List.generate(300, (index) => '10.0.$index.0/32').join('\n');
+      expect(parseCfRangeList(raw).length, 256);
+    });
+
+    test('an empty answer yields nothing', () {
+      expect(parseCfRangeList(''), isEmpty);
+    });
+  });
+
+  group('effectiveCfRanges', () {
+    test('falls back to the bundled pool until an update lands', () {
+      expect(effectiveCfRanges(const []), defaultCfRanges);
+    });
+
+    test('uses what the update cached', () {
+      expect(effectiveCfRanges(const ['104.16.0.0/13']), ['104.16.0.0/13']);
     });
   });
 

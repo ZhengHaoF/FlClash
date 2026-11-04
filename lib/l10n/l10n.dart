@@ -8331,6 +8331,61 @@ class AppLocalizations {
       args: [ip],
     );
   }
+
+  /// `Ranges`
+  String get cfRanges {
+    return Intl.message('Ranges', name: 'cfRanges', desc: '', args: []);
+  }
+
+  /// `{count} ranges`
+  String cfRangesCount(Object count) {
+    return Intl.message(
+      '$count ranges',
+      name: 'cfRangesCount',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Update ranges`
+  String get cfRangesUpdate {
+    return Intl.message(
+      'Update ranges',
+      name: 'cfRangesUpdate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Updating…`
+  String get cfRangesUpdating {
+    return Intl.message(
+      'Updating…',
+      name: 'cfRangesUpdating',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Built-in ranges; not updated from Cloudflare yet`
+  String get cfRangesBuiltIn {
+    return Intl.message(
+      'Built-in ranges; not updated from Cloudflare yet',
+      name: 'cfRangesBuiltIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Updated {time}`
+  String cfRangesUpdatedAt(Object time) {
+    return Intl.message(
+      'Updated $time',
+      name: 'cfRangesUpdatedAt',
+      desc: '',
+      args: [time],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

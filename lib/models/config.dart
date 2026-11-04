@@ -275,6 +275,10 @@ abstract class AppSettingProps with _$AppSettingProps {
     @Default([]) List<String> serviceOrder,
     @Default([]) List<String> disabledServices,
     @Default({}) Map<String, Map<String, double>> tableColumnWidths,
+    // Cloudflare's ranges as the page last fetched them, and when; an empty
+    // list means nothing was fetched yet and the bundled pool is in use.
+    @Default([]) List<String> cfRangesV4,
+    @Default(0) int cfRangesFetchedAt,
   }) = _AppSettingProps;
 
   factory AppSettingProps.fromJson(Map<String, Object?> json) =>

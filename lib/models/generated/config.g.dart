@@ -87,6 +87,12 @@ _AppSettingProps _$AppSettingPropsFromJson(
         ),
       ) ??
       const {},
+  cfRangesV4:
+      (json['cfRangesV4'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ??
+      const [],
+  cfRangesFetchedAt: (json['cfRangesFetchedAt'] as num?)?.toInt() ?? 0,
 );
 
 Map<String, dynamic> _$AppSettingPropsToJson(_AppSettingProps instance) =>
@@ -123,6 +129,8 @@ Map<String, dynamic> _$AppSettingPropsToJson(_AppSettingProps instance) =>
       'serviceOrder': instance.serviceOrder,
       'disabledServices': instance.disabledServices,
       'tableColumnWidths': instance.tableColumnWidths,
+      'cfRangesV4': instance.cfRangesV4,
+      'cfRangesFetchedAt': instance.cfRangesFetchedAt,
     };
 
 const _$TabAnimationEnumMap = {

@@ -41,7 +41,7 @@ final class CfOptimizeProvider
   }
 }
 
-String _$cfOptimizeHash() => r'5d9e7a3d38ccab0a2271ccee7536d5853715421f';
+String _$cfOptimizeHash() => r'f249d3ca8d00bff46fab12b4380bd464982bc330';
 
 abstract class _$CfOptimize extends $Notifier<CfOptimizeState> {
   CfOptimizeState build();
@@ -61,16 +61,14 @@ abstract class _$CfOptimize extends $Notifier<CfOptimizeState> {
   }
 }
 
-/// The server domains the current profile's own proxies dial, read out of the
-/// raw subscription file in an isolate. A provider's contents stay external,
-/// and a proxy already dialing an IP literal has no domain to optimize.
+/// The server domains the profile's own proxies dial, parsed in an isolate.
+/// A provider's proxies stay behind its URL, so they are not candidates here.
 
 @ProviderFor(cfProfileDomains)
 final cfProfileDomainsProvider = CfProfileDomainsProvider._();
 
-/// The server domains the current profile's own proxies dial, read out of the
-/// raw subscription file in an isolate. A provider's contents stay external,
-/// and a proxy already dialing an IP literal has no domain to optimize.
+/// The server domains the profile's own proxies dial, parsed in an isolate.
+/// A provider's proxies stay behind its URL, so they are not candidates here.
 
 final class CfProfileDomainsProvider
     extends
@@ -80,9 +78,8 @@ final class CfProfileDomainsProvider
           FutureOr<List<String>>
         >
     with $FutureModifier<List<String>>, $FutureProvider<List<String>> {
-  /// The server domains the current profile's own proxies dial, read out of the
-  /// raw subscription file in an isolate. A provider's contents stay external,
-  /// and a proxy already dialing an IP literal has no domain to optimize.
+  /// The server domains the profile's own proxies dial, parsed in an isolate.
+  /// A provider's proxies stay behind its URL, so they are not candidates here.
   CfProfileDomainsProvider._()
     : super(
         from: null,

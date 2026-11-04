@@ -995,5 +995,11 @@
   "cfMatchedFilter": "{count} 件が条件一致",
   "cfOutsideRangesTip": "次のドメインは Cloudflare のセグメント外に解決されるため、入口 IP を固定すると接続できなくなる可能性があります：{domains}。それでも適用しますか？",
   "cfUndetectedTip": "次のドメインはまだ検出されていないため、Cloudflare のセグメントかどうか確認できません：{domains}。それでも適用しますか？",
-  "pinnedEntryTip": "このノードの入口 IP は hosts オーバーライドで固定されています：{ip}"
+  "pinnedEntryTip": "このノードの入口 IP は hosts オーバーライドで固定されています：{ip}",
+  "cfRanges": "Cloudflare セグメント",
+  "cfRangesCount": "{count} 件のセグメント",
+  "cfRangesUpdate": "セグメントを更新",
+  "cfRangesUpdating": "更新中…",
+  "cfRangesBuiltIn": "内蔵セグメント（Cloudflare から未更新）",
+  "cfRangesUpdatedAt": "{time} に更新"
 }

@@ -91,9 +91,9 @@ class _CfOptimizeViewState extends ConsumerState<CfOptimizeView> {
     );
   }
 
-  CfScanParams _buildScanParams() {
+  CfScanParams _buildScanParams(List<String> ranges) {
     return CfScanParams(
-      ranges: defaultCfRanges,
+      ranges: ranges,
       port: _portController.text.trim(),
       sampleCount: _sampleCount(),
       concurrency: 128,
@@ -112,6 +112,10 @@ class _CfOptimizeViewState extends ConsumerState<CfOptimizeView> {
     return {...profileDomains, ..._manualDomains}.toList()..sort();
   }
 
+  List<String> _ranges() {
+    return effectiveCfRanges(ref.read(appSettingProvider).cfRangesV4);
+  }
+
   void _scan() {
     final port = _intValue(_portController.text);
     setState(() {
@@ -121,13 +125,17 @@ class _CfOptimizeViewState extends ConsumerState<CfOptimizeView> {
     if (_portInvalid || _sampleCountInvalid) {
       return;
     }
-    ref.read(cfOptimizeProvider.notifier).scan(_buildScanParams());
+    ref.read(cfOptimizeProvider.notifier).scan(_buildScanParams(_ranges()));
+  }
+
+  void _updateRanges() {
+    ref.read(cfOptimizeProvider.notifier).updateRanges();
   }
 
   void _detect() {
     ref
         .read(cfOptimizeProvider.notifier)
-        .detect(_candidateDomains(), defaultCfRanges);
+        .detect(_candidateDomains(), _ranges());
   }
 
   void _toggleDomain(String domain) {
@@ -247,6 +255,21 @@ class _CfOptimizeViewState extends ConsumerState<CfOptimizeView> {
         if (domains.contains(entry.key)) entry.key: entry.value,
     };
     final scanResult = state.scanResult;
+    final rangesFetchedAt = ref.watch(
+      appSettingProvider.select((setting) => setting.cfRangesFetchedAt),
+    );
+    final ranges = effectiveCfRanges(
+      ref.watch(appSettingProvider.select((setting) => setting.cfRangesV4)),
+    );
+    final rangesFooter = switch ((state.updatingRanges, rangesFetchedAt)) {
+      (true, _) => appLocalizations.cfRangesUpdating,
+      (false, 0) => appLocalizations.cfRangesBuiltIn,
+      _ => appLocalizations.cfRangesUpdatedAt(
+        DateTime.fromMillisecondsSinceEpoch(
+          rangesFetchedAt,
+        ).getLastUpdateTimeDesc(context, compact: true),
+      ),
+    };
 
     final items = [
       generateSection(
@@ -257,6 +280,30 @@ class _CfOptimizeViewState extends ConsumerState<CfOptimizeView> {
             title: Text(appLocalizations.cfOptimizeDesc),
           ),
         ],
+      ),
+      generateSection(
+        title: appLocalizations.cfRanges,
+        items: [
+          ListItem(
+            title: Text(appLocalizations.cfRangesCount(ranges.length)),
+            subtitle: state.rangesError == null
+                ? null
+                : Text(
+                    state.rangesError!,
+                    style: TextStyle(color: context.colorScheme.error),
+                  ),
+          ),
+        ],
+        actions: [
+          IconButtonData(
+            glyph: AppGlyphs.sync,
+            tooltip: appLocalizations.cfRangesUpdate,
+            onPressed: state.scanning || state.updatingRanges
+                ? null
+                : _updateRanges,
+          ),
+        ],
+        footer: rangesFooter,
       ),
       generateSection(
         title: appLocalizations.cfScanSettings,

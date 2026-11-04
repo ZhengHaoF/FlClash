@@ -995,5 +995,11 @@
   "cfMatchedFilter": "прошло {count}",
   "cfOutsideRangesTip": "Эти домены разрешаются вне диапазонов Cloudflare, поэтому закреплённый IP входа может их не обслуживать: {domains}. Всё равно применить?",
   "cfUndetectedTip": "Эти домены ещё не проверены, ничего не подтверждает, что их обслуживает Cloudflare: {domains}. Всё равно применить?",
-  "pinnedEntryTip": "Этот узел подключается к закреплённому IP входа: {ip}"
+  "pinnedEntryTip": "Этот узел подключается к закреплённому IP входа: {ip}",
+  "cfRanges": "Диапазоны Cloudflare",
+  "cfRangesCount": "диапазонов: {count}",
+  "cfRangesUpdate": "Обновить диапазоны",
+  "cfRangesUpdating": "Обновление…",
+  "cfRangesBuiltIn": "Встроенные диапазоны; ещё не обновлялись с Cloudflare",
+  "cfRangesUpdatedAt": "Обновлено {time}"
 }

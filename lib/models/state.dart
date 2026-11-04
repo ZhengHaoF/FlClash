@@ -276,7 +276,9 @@ abstract class CfOptimizeState with _$CfOptimizeState {
   const factory CfOptimizeState({
     @Default(false) bool scanning,
     @Default(false) bool detecting,
+    @Default(false) bool updatingRanges,
     String? error,
+    String? rangesError,
     CfScanResult? scanResult,
     DateTime? scannedAt,
     @Default({}) Map<String, CfDetectItem> detectResults,

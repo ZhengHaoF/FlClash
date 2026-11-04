@@ -213,3 +213,6 @@ const defaultCfRanges = [
   '172.64.0.0/13',
   '131.0.72.0/22',
 ];
+
+/// Cloudflare's own published IPv4 list; the page's update button caches it.
+const cfRangesV4Url = 'https://www.cloudflare.com/ips-v4';

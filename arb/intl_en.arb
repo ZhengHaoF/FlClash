@@ -995,5 +995,11 @@
   "cfMatchedFilter": "{count} matched",
   "cfOutsideRangesTip": "These domains resolve outside Cloudflare's ranges, so a pinned entrance may not serve them: {domains}. Apply anyway?",
   "cfUndetectedTip": "These domains have not been detected yet, so nothing confirms they answer to a Cloudflare edge: {domains}. Apply anyway?",
-  "pinnedEntryTip": "This node dials a pinned entrance IP: {ip}"
+  "pinnedEntryTip": "This node dials a pinned entrance IP: {ip}",
+  "cfRanges": "Ranges",
+  "cfRangesCount": "{count} ranges",
+  "cfRangesUpdate": "Update ranges",
+  "cfRangesUpdating": "Updating…",
+  "cfRangesBuiltIn": "Built-in ranges; not updated from Cloudflare yet",
+  "cfRangesUpdatedAt": "Updated {time}"
 }

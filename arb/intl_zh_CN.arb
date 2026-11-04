@@ -995,5 +995,11 @@
   "cfMatchedFilter": "通过 {count} 个",
   "cfOutsideRangesTip": "以下域名解析到 Cloudflare 网段之外，固定成入口 IP 后它们可能无法连接：{domains}。仍要应用吗？",
   "cfUndetectedTip": "以下域名还没有检测过，无法确认它们由 Cloudflare 网段提供服务：{domains}。仍要应用吗？",
-  "pinnedEntryTip": "该节点拨号的入口 IP 已被 Hosts 覆写固定为：{ip}"
+  "pinnedEntryTip": "该节点拨号的入口 IP 已被 Hosts 覆写固定为：{ip}",
+  "cfRanges": "Cloudflare 网段",
+  "cfRangesCount": "{count} 个网段",
+  "cfRangesUpdate": "更新网段",
+  "cfRangesUpdating": "更新中…",
+  "cfRangesBuiltIn": "内置网段，尚未从 Cloudflare 更新",
+  "cfRangesUpdatedAt": "更新于 {time}"
 }

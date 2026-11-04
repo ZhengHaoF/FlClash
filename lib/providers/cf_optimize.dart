@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:fl_clash/common/common.dart';
@@ -53,7 +54,76 @@ class CfOptimize extends _$CfOptimize {
       state = state.copyWith(detecting: false, error: error.toString());
     }
   }
+
+  /// Fetches Cloudflare's published list and keeps it in the app settings. A
+  /// failed fetch leaves the previous list in place, so the page never falls
+  /// back to a smaller pool behind the user's back; the bundled pool only
+  /// serves until the first successful update.
+  Future<void> updateRanges() async {
+    if (state.updatingRanges || state.scanning) {
+      return;
+    }
+    state = state.copyWith(updatingRanges: true, rangesError: null);
+    try {
+      final response = await request.getTextResponseForUrl(cfRangesV4Url);
+      final ranges = parseCfRangeList(response.data ?? '');
+      if (ranges.isEmpty) {
+        throw const FormatException('no IPv4 prefix in the answer');
+      }
+      ref
+          .read(appSettingProvider.notifier)
+          .update(
+            (setting) => setting.copyWith(
+              cfRangesV4: ranges,
+              cfRangesFetchedAt: DateTime.now().millisecondsSinceEpoch,
+            ),
+          );
+      // The kept answers were measured against the ranges just replaced.
+      state = const CfOptimizeState();
+    } catch (error) {
+      state = state.copyWith(
+        updatingRanges: false,
+        rangesError: error.toString(),
+      );
+    }
+  }
 }
+
+/// The ranges a scan or a detect run uses: what the last update cached, or the
+/// bundled pool while nothing has been fetched yet.
+List<String> effectiveCfRanges(List<String> cached) {
+  return cached.isEmpty ? defaultCfRanges : cached;
+}
+
+/// Keeps the IPv4 prefixes in the answer, in order and deduplicated. The Core
+/// fails a whole scan on one unusable range, so anything else - a v6 prefix, a
+/// malformed line, an over-long answer - is dropped here instead.
+List<String> parseCfRangeList(String raw) {
+  final seen = <String>{};
+  final ranges = <String>[];
+  for (final line in const LineSplitter().convert(raw)) {
+    final value = line.trim();
+    if (!isCidr(value)) {
+      continue;
+    }
+    final address = value.substring(0, value.lastIndexOf('/'));
+    if (InternetAddress.tryParse(address)?.type != InternetAddressType.IPv4) {
+      continue;
+    }
+    if (!seen.add(value)) {
+      continue;
+    }
+    ranges.add(value);
+    if (ranges.length == _maxCfRanges) {
+      break;
+    }
+  }
+  return ranges;
+}
+
+/// Cloudflare publishes tens of prefixes; a cap keeps a wrong or hostile
+/// answer from turning into the pool every later scan samples.
+const _maxCfRanges = 256;
 
 /// The server domains the profile's own proxies dial, parsed in an isolate.
 /// A provider's proxies stay behind its URL, so they are not candidates here.
