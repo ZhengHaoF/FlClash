@@ -7,6 +7,42 @@ import 'package:fl_clash/models/models.dart';
 import 'desktop/model.dart';
 import 'method.dart';
 
+/// Mirrors the deadline cf_scan.go computes, so the transport guard never fires
+/// before the core has had its chance to answer.
+Duration cfScanGuardDuration(CfScanParams params) {
+  int bound(int value, int fallback, int min, int max) {
+    if (value <= 0) {
+      return fallback;
+    }
+    if (value < min) {
+      return min;
+    }
+    if (value > max) {
+      return max;
+    }
+    return value;
+  }
+
+  final sampleCount = bound(params.sampleCount, 500, 1, 4096);
+  final concurrency = bound(params.concurrency, 100, 1, 500);
+  final attempts = bound(params.testCount, 2, 1, 10);
+  final perDial = bound(params.timeout, 1500, 100, 10000);
+  final rounds = (sampleCount + concurrency - 1) ~/ concurrency;
+  final totalMs = rounds * perDial * attempts + 5000;
+  return Duration(milliseconds: totalMs > 125000 ? 125000 : totalMs);
+}
+
+int cfDetectBudgetFactor(CfDetectParams params) {
+  final rounds = params.domains.isEmpty ? 1 : (params.domains.length + 7) ~/ 8;
+  if (rounds < 1) {
+    return 1;
+  }
+  if (rounds > 8) {
+    return 8;
+  }
+  return rounds;
+}
+
 mixin CoreInterface {
   Future<CoreLifecycleResult> start();
 
@@ -55,6 +91,10 @@ mixin CoreInterface {
   Future<ProbeResult?> probe(ProbeParams params);
 
   Future<OutboundIpResult?> outboundIp(OutboundIpParams params);
+
+  Future<CfScanResult?> cfScan(CfScanParams params);
+
+  Future<CfDetectResult?> cfDetect(CfDetectParams params);
 
   Future<List<ServiceCheckItem>> serviceCheck(ServiceCheckParams params);
 
@@ -621,6 +661,29 @@ abstract class CoreHandlerInterface with CoreInterface {
       timeout: coreGuardFor(params.timeout),
     );
     return data == null ? null : OutboundIpResult.fromJson(data);
+  }
+
+  @override
+  Future<CfScanResult?> cfScan(CfScanParams params) async {
+    final data = await _invokeMethod<Map<String, dynamic>>(
+      method: CoreMethod.cfScan,
+      arguments: params.toJson(),
+      timeout: cfScanGuardDuration(params),
+    );
+    return data == null ? null : CfScanResult.fromJson(data);
+  }
+
+  @override
+  Future<CfDetectResult?> cfDetect(CfDetectParams params) async {
+    final data = await _invokeMethod<Map<String, dynamic>>(
+      method: CoreMethod.cfDetect,
+      arguments: params.toJson(),
+      timeout: coreGuardFor(
+        params.timeout,
+        budgetFactor: cfDetectBudgetFactor(params),
+      ),
+    );
+    return data == null ? null : CfDetectResult.fromJson(data);
   }
 
   @override

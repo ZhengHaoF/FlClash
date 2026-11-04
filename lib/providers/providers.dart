@@ -1,5 +1,6 @@
 export 'action.dart';
 export 'app.dart';
+export 'cf_optimize.dart';
 export 'config.dart';
 export 'core.dart';
 export 'database.dart';

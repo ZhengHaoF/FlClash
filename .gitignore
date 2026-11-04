@@ -30,6 +30,7 @@ migrate_working_dir/
 /.widget_preview/
 .flutter-plugins
 .flutter-plugins-dependencies
+.flutter_tool_state
 .packages
 .pub-cache/
 .pub/

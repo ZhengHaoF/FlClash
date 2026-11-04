@@ -283,6 +283,85 @@ abstract class OutboundIpResult with _$OutboundIpResult {
 }
 
 @freezed
+abstract class CfScanParams with _$CfScanParams {
+  const factory CfScanParams({
+    @Default([]) List<String> ranges,
+    required String port,
+    @JsonKey(name: 'sample-count') @Default(0) int sampleCount,
+    @Default(0) int concurrency,
+    @JsonKey(name: 'test-count') @Default(0) int testCount,
+    @Default(0) int timeout,
+    @JsonKey(name: 'min-delay') @Default(0) int minDelay,
+    @JsonKey(name: 'max-delay') @Default(0) int maxDelay,
+    @JsonKey(name: 'max-loss-rate') @Default(0) double maxLossRate,
+  }) = _CfScanParams;
+
+  factory CfScanParams.fromJson(Map<String, Object?> json) =>
+      _$CfScanParamsFromJson(json);
+}
+
+@freezed
+abstract class CfScanItem with _$CfScanItem {
+  const factory CfScanItem({
+    required String ip,
+    @Default(0) int sent,
+    @Default(0) int recv,
+    @JsonKey(name: 'loss-rate') @Default(0) double lossRate,
+    @JsonKey(name: 'delay-ms') @Default(0) int delayMs,
+  }) = _CfScanItem;
+
+  factory CfScanItem.fromJson(Map<String, Object?> json) =>
+      _$CfScanItemFromJson(json);
+}
+
+@freezed
+abstract class CfScanResult with _$CfScanResult {
+  const factory CfScanResult({
+    @Default([]) List<CfScanItem> results,
+    @Default(0) int sampled,
+    @JsonKey(name: 'elapsed-ms') @Default(0) int elapsedMs,
+  }) = _CfScanResult;
+
+  factory CfScanResult.fromJson(Map<String, Object?> json) =>
+      _$CfScanResultFromJson(json);
+}
+
+@freezed
+abstract class CfDetectParams with _$CfDetectParams {
+  const factory CfDetectParams({
+    @Default([]) List<String> domains,
+    @Default([]) List<String> ranges,
+    @Default(0) int timeout,
+  }) = _CfDetectParams;
+
+  factory CfDetectParams.fromJson(Map<String, Object?> json) =>
+      _$CfDetectParamsFromJson(json);
+}
+
+@freezed
+abstract class CfDetectItem with _$CfDetectItem {
+  const factory CfDetectItem({
+    required String domain,
+    @Default([]) List<String> ips,
+    @JsonKey(name: 'is-ip') @Default(false) bool isIp,
+    @JsonKey(name: 'in-ranges') @Default(false) bool inRanges,
+    String? error,
+  }) = _CfDetectItem;
+
+  factory CfDetectItem.fromJson(Map<String, Object?> json) =>
+      _$CfDetectItemFromJson(json);
+}
+
+@freezed
+abstract class CfDetectResult with _$CfDetectResult {
+  const factory CfDetectResult({@Default([]) List<CfDetectItem> results}) =
+      _CfDetectResult;
+
+  factory CfDetectResult.fromJson(Map<String, Object?> json) =>
+      _$CfDetectResultFromJson(json);
+}
+
+@freezed
 abstract class ServiceCheckParams with _$ServiceCheckParams {
   const factory ServiceCheckParams({
     @JsonKey(name: 'proxy-name') @Default('') String proxyName,

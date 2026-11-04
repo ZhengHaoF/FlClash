@@ -32,6 +32,8 @@ enum CoreMethod {
   probe,
   outboundIp,
   serviceCheck,
+  cfScan,
+  cfDetect,
   getConnections,
   getConnectionCount,
   closeConnections,

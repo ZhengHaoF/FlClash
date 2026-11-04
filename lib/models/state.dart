@@ -270,3 +270,15 @@ abstract class SetupState with _$SetupState {
     String? matchTarget,
   }) = _SetupState;
 }
+
+@freezed
+abstract class CfOptimizeState with _$CfOptimizeState {
+  const factory CfOptimizeState({
+    @Default(false) bool scanning,
+    @Default(false) bool detecting,
+    String? error,
+    CfScanResult? scanResult,
+    DateTime? scannedAt,
+    @Default({}) Map<String, CfDetectItem> detectResults,
+  }) = _CfOptimizeState;
+}

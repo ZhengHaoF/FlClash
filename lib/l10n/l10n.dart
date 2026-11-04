@@ -7943,8 +7943,7 @@ class AppLocalizations {
   String customImportDroppedSubRules(num count, Object label) {
     return Intl.plural(
       count,
-      one:
-          '1 SUB-RULE rule was dropped, since custom profiles do not support sub-rules',
+      one: '1 SUB-RULE rule was dropped, since custom profiles do not support sub-rules',
       other:
           '$label SUB-RULE rules were dropped, since custom profiles do not support sub-rules',
       name: 'customImportDroppedSubRules',
@@ -8050,6 +8049,286 @@ class AppLocalizations {
       name: 'alreadyInLocalProxies',
       desc: '',
       args: [name],
+    );
+  }
+
+  /// `Cloudflare preferred IP`
+  String get cfOptimize {
+    return Intl.message(
+      'Cloudflare preferred IP',
+      name: 'cfOptimize',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `How it works`
+  String get cfHowItWorks {
+    return Intl.message(
+      'How it works',
+      name: 'cfHowItWorks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Scans Cloudflare's announced ranges for the entrances fastest on your line, then pins the selected domains' entrances through the app's hosts overrides. Only the entry IP changes; the TLS SNI and Host header keep the domain. Results age with the network, so rescan now and then.`
+  String get cfOptimizeDesc {
+    return Intl.message(
+      'Scans Cloudflare\'s announced ranges for the entrances fastest on your line, then pins the selected domains\' entrances through the app\'s hosts overrides. Only the entry IP changes; the TLS SNI and Host header keep the domain. Results age with the network, so rescan now and then.',
+      name: 'cfOptimizeDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Scan`
+  String get cfScanSettings {
+    return Intl.message('Scan', name: 'cfScanSettings', desc: '', args: []);
+  }
+
+  /// `Sample count (1-4096)`
+  String get cfSampleCount {
+    return Intl.message(
+      'Sample count (1-4096)',
+      name: 'cfSampleCount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Min latency (ms)`
+  String get cfMinDelay {
+    return Intl.message(
+      'Min latency (ms)',
+      name: 'cfMinDelay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Max latency (ms)`
+  String get cfMaxDelay {
+    return Intl.message(
+      'Max latency (ms)',
+      name: 'cfMaxDelay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start scan`
+  String get cfStartScan {
+    return Intl.message('Start scan', name: 'cfStartScan', desc: '', args: []);
+  }
+
+  /// `Scanning…`
+  String get cfScanning {
+    return Intl.message('Scanning…', name: 'cfScanning', desc: '', args: []);
+  }
+
+  /// `Scan results`
+  String get cfScanResult {
+    return Intl.message(
+      'Scan results',
+      name: 'cfScanResult',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No address matched the filters`
+  String get cfNoResult {
+    return Intl.message(
+      'No address matched the filters',
+      name: 'cfNoResult',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{sampled} sampled`
+  String cfScanSampled(Object sampled) {
+    return Intl.message(
+      '$sampled sampled',
+      name: 'cfScanSampled',
+      desc: '',
+      args: [sampled],
+    );
+  }
+
+  /// `Candidate domains`
+  String get cfDomains {
+    return Intl.message(
+      'Candidate domains',
+      name: 'cfDomains',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Detect`
+  String get cfDetect {
+    return Intl.message('Detect', name: 'cfDetect', desc: '', args: []);
+  }
+
+  /// `Detecting…`
+  String get cfDetecting {
+    return Intl.message('Detecting…', name: 'cfDetecting', desc: '', args: []);
+  }
+
+  /// `Cloudflare range`
+  String get cfInRanges {
+    return Intl.message(
+      'Cloudflare range',
+      name: 'cfInRanges',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Outside Cloudflare`
+  String get cfNotInRanges {
+    return Intl.message(
+      'Outside Cloudflare',
+      name: 'cfNotInRanges',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Detect failed`
+  String get cfDetectFailed {
+    return Intl.message(
+      'Detect failed',
+      name: 'cfDetectFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add a domain`
+  String get cfAddDomain {
+    return Intl.message(
+      'Add a domain',
+      name: 'cfAddDomain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Active host mappings`
+  String get cfAppliedHosts {
+    return Intl.message(
+      'Active host mappings',
+      name: 'cfAppliedHosts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mappings for the candidate domains above. Applying one re-applies the profile within a couple of seconds, which drops running connections; other hosts entries stay in General settings.`
+  String get cfAppliedHint {
+    return Intl.message(
+      'Mappings for the candidate domains above. Applying one re-applies the profile within a couple of seconds, which drops running connections; other hosts entries stay in General settings.',
+      name: 'cfAppliedHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Clear all`
+  String get cfClearAll {
+    return Intl.message('Clear all', name: 'cfClearAll', desc: '', args: []);
+  }
+
+  /// `{count} mappings will be removed. Other hosts entries stay.`
+  String cfClearAllTip(Object count) {
+    return Intl.message(
+      '$count mappings will be removed. Other hosts entries stay.',
+      name: 'cfClearAllTip',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Select at least one domain first`
+  String get cfSelectDomainFirst {
+    return Intl.message(
+      'Select at least one domain first',
+      name: 'cfSelectDomainFirst',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Run a scan first`
+  String get cfScanFirst {
+    return Intl.message(
+      'Run a scan first',
+      name: 'cfScanFirst',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Filter`
+  String get cfFilter {
+    return Intl.message('Filter', name: 'cfFilter', desc: '', args: []);
+  }
+
+  /// `Max loss (%)`
+  String get cfMaxLoss {
+    return Intl.message('Max loss (%)', name: 'cfMaxLoss', desc: '', args: []);
+  }
+
+  /// `Narrows the last scan's answers. The lower bound drops data-centre hops that only look fast; moving a bound redraws the list without rescanning.`
+  String get cfFilterDesc {
+    return Intl.message(
+      'Narrows the last scan\'s answers. The lower bound drops data-centre hops that only look fast; moving a bound redraws the list without rescanning.',
+      name: 'cfFilterDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} matched`
+  String cfMatchedFilter(Object count) {
+    return Intl.message(
+      '$count matched',
+      name: 'cfMatchedFilter',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `These domains resolve outside Cloudflare's ranges, so a pinned entrance may not serve them: {domains}. Apply anyway?`
+  String cfOutsideRangesTip(Object domains) {
+    return Intl.message(
+      'These domains resolve outside Cloudflare\'s ranges, so a pinned entrance may not serve them: $domains. Apply anyway?',
+      name: 'cfOutsideRangesTip',
+      desc: '',
+      args: [domains],
+    );
+  }
+
+  /// `These domains have not been detected yet, so nothing confirms they answer to a Cloudflare edge: {domains}. Apply anyway?`
+  String cfUndetectedTip(Object domains) {
+    return Intl.message(
+      'These domains have not been detected yet, so nothing confirms they answer to a Cloudflare edge: $domains. Apply anyway?',
+      name: 'cfUndetectedTip',
+      desc: '',
+      args: [domains],
+    );
+  }
+
+  /// `This node dials a pinned entrance IP: {ip}`
+  String pinnedEntryTip(Object ip) {
+    return Intl.message(
+      'This node dials a pinned entrance IP: $ip',
+      name: 'pinnedEntryTip',
+      desc: '',
+      args: [ip],
     );
   }
 }

@@ -209,6 +209,8 @@ var methodHandlers = map[CoreMethod]methodHandler{
 	probeMethod:                    withArguments(handleProbe),
 	outboundIpMethod:               withArguments(handleOutboundIp),
 	serviceCheckMethod:             withArguments(handleServiceCheck),
+	cfScanMethod:                   withFallible(handleCfScan),
+	cfDetectMethod:                 withFallible(handleCfDetect),
 	getTrafficMethod:               withArguments(handleGetTraffic),
 	getTotalTrafficMethod:          withArguments(handleGetTotalTraffic),
 	resetTrafficMethod:             acknowledged(handleResetTraffic),

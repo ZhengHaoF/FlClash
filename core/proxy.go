@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"maps"
+	"net"
 	"os"
 	"strings"
 	"sync"
@@ -108,6 +109,7 @@ func proxyView(proxy constant.Proxy) any {
 		ProviderName: proxy.ProxyInfo().ProviderName,
 	}
 	if !isProxyGroupType(proxy.Type()) {
+		node.Server = serverHost(proxy.Adapter().Addr())
 		return node
 	}
 	data, err := proxy.Adapter().MarshalJSON()
@@ -124,6 +126,16 @@ func proxyView(proxy constant.Proxy) any {
 		view["hidden"] = true
 	}
 	return view
+}
+
+// A node's dial target carries a port; the app pairs hosts overrides by host,
+// and a hosts key never carries one.
+func serverHost(addr string) string {
+	host, _, err := net.SplitHostPort(addr)
+	if err != nil {
+		return addr
+	}
+	return host
 }
 
 // mihomo builds its own GLOBAL over the reserved provider, which no configured

@@ -397,6 +397,122 @@ Map<String, dynamic> _$OutboundIpResultToJson(_OutboundIpResult instance) =>
       'node-hits': instance.nodeHits,
     };
 
+_CfScanParams _$CfScanParamsFromJson(Map<String, dynamic> json) =>
+    _CfScanParams(
+      ranges:
+          (json['ranges'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      port: json['port'] as String,
+      sampleCount: (json['sample-count'] as num?)?.toInt() ?? 0,
+      concurrency: (json['concurrency'] as num?)?.toInt() ?? 0,
+      testCount: (json['test-count'] as num?)?.toInt() ?? 0,
+      timeout: (json['timeout'] as num?)?.toInt() ?? 0,
+      minDelay: (json['min-delay'] as num?)?.toInt() ?? 0,
+      maxDelay: (json['max-delay'] as num?)?.toInt() ?? 0,
+      maxLossRate: (json['max-loss-rate'] as num?)?.toDouble() ?? 0,
+    );
+
+Map<String, dynamic> _$CfScanParamsToJson(_CfScanParams instance) =>
+    <String, dynamic>{
+      'ranges': instance.ranges,
+      'port': instance.port,
+      'sample-count': instance.sampleCount,
+      'concurrency': instance.concurrency,
+      'test-count': instance.testCount,
+      'timeout': instance.timeout,
+      'min-delay': instance.minDelay,
+      'max-delay': instance.maxDelay,
+      'max-loss-rate': instance.maxLossRate,
+    };
+
+_CfScanItem _$CfScanItemFromJson(Map<String, dynamic> json) => _CfScanItem(
+  ip: json['ip'] as String,
+  sent: (json['sent'] as num?)?.toInt() ?? 0,
+  recv: (json['recv'] as num?)?.toInt() ?? 0,
+  lossRate: (json['loss-rate'] as num?)?.toDouble() ?? 0,
+  delayMs: (json['delay-ms'] as num?)?.toInt() ?? 0,
+);
+
+Map<String, dynamic> _$CfScanItemToJson(_CfScanItem instance) =>
+    <String, dynamic>{
+      'ip': instance.ip,
+      'sent': instance.sent,
+      'recv': instance.recv,
+      'loss-rate': instance.lossRate,
+      'delay-ms': instance.delayMs,
+    };
+
+_CfScanResult _$CfScanResultFromJson(Map<String, dynamic> json) =>
+    _CfScanResult(
+      results:
+          (json['results'] as List<dynamic>?)
+              ?.map((e) => CfScanItem.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      sampled: (json['sampled'] as num?)?.toInt() ?? 0,
+      elapsedMs: (json['elapsed-ms'] as num?)?.toInt() ?? 0,
+    );
+
+Map<String, dynamic> _$CfScanResultToJson(_CfScanResult instance) =>
+    <String, dynamic>{
+      'results': instance.results,
+      'sampled': instance.sampled,
+      'elapsed-ms': instance.elapsedMs,
+    };
+
+_CfDetectParams _$CfDetectParamsFromJson(
+  Map<String, dynamic> json,
+) => _CfDetectParams(
+  domains:
+      (json['domains'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+      const [],
+  ranges:
+      (json['ranges'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+      const [],
+  timeout: (json['timeout'] as num?)?.toInt() ?? 0,
+);
+
+Map<String, dynamic> _$CfDetectParamsToJson(_CfDetectParams instance) =>
+    <String, dynamic>{
+      'domains': instance.domains,
+      'ranges': instance.ranges,
+      'timeout': instance.timeout,
+    };
+
+_CfDetectItem _$CfDetectItemFromJson(Map<String, dynamic> json) =>
+    _CfDetectItem(
+      domain: json['domain'] as String,
+      ips:
+          (json['ips'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+          const [],
+      isIp: json['is-ip'] as bool? ?? false,
+      inRanges: json['in-ranges'] as bool? ?? false,
+      error: json['error'] as String?,
+    );
+
+Map<String, dynamic> _$CfDetectItemToJson(_CfDetectItem instance) =>
+    <String, dynamic>{
+      'domain': instance.domain,
+      'ips': instance.ips,
+      'is-ip': instance.isIp,
+      'in-ranges': instance.inRanges,
+      'error': instance.error,
+    };
+
+_CfDetectResult _$CfDetectResultFromJson(Map<String, dynamic> json) =>
+    _CfDetectResult(
+      results:
+          (json['results'] as List<dynamic>?)
+              ?.map((e) => CfDetectItem.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+    );
+
+Map<String, dynamic> _$CfDetectResultToJson(_CfDetectResult instance) =>
+    <String, dynamic>{'results': instance.results};
+
 _ServiceCheckParams _$ServiceCheckParamsFromJson(Map<String, dynamic> json) =>
     _ServiceCheckParams(
       proxyName: json['proxy-name'] as String? ?? '',

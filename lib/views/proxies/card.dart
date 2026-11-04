@@ -132,6 +132,15 @@ class ProxyCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final measure = globalState.measure;
     final isLoose = type == ProxyCardType.loose;
+    final server = proxy.server;
+    final pinnedEntry = server == null
+        ? null
+        : pinnedHostsEntryForHost(
+            ref.watch(
+              patchClashConfigProvider.select((config) => config.hosts),
+            ),
+            server,
+          );
     final delayText = _DelayText(
       proxy: proxy,
       testUrl: testUrl,
@@ -150,7 +159,15 @@ class ProxyCard extends ConsumerWidget {
             children: [
               SizedBox(
                 height: measure.textHeight(AppTextStyle.footnote),
-                child: _ProxyDesc(proxy: proxy, style: typeStyle),
+                child: Row(
+                  spacing: 4,
+                  children: [
+                    if (pinnedEntry != null) _PinnedEntryMark(ip: pinnedEntry),
+                    Expanded(
+                      child: _ProxyDesc(proxy: proxy, style: typeStyle),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 6),
               delayText,
@@ -162,6 +179,10 @@ class ProxyCard extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                if (pinnedEntry != null) ...[
+                  _PinnedEntryMark(ip: pinnedEntry),
+                  const SizedBox(width: 4),
+                ],
                 Flexible(
                   flex: 1,
                   child: TooltipText(
@@ -254,6 +275,24 @@ class _ProxyDesc extends ConsumerWidget {
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: style,
+    );
+  }
+}
+
+class _PinnedEntryMark extends StatelessWidget {
+  const _PinnedEntryMark({required this.ip});
+
+  final String ip;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: context.appLocalizations.pinnedEntryTip(ip),
+      child: GlyphIcon(
+        AppGlyphs.bolt,
+        size: 14,
+        color: context.colorScheme.primary,
+      ),
     );
   }
 }

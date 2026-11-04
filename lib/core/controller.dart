@@ -296,6 +296,12 @@ class CoreController {
   Future<OutboundIpResult?> outboundIp(OutboundIpParams params) =>
       _interface.outboundIp(params);
 
+  Future<CfScanResult?> cfScan(CfScanParams params) =>
+      _interface.cfScan(params);
+
+  Future<CfDetectResult?> cfDetect(CfDetectParams params) =>
+      _interface.cfDetect(params);
+
   Future<List<ServiceCheckItem>> serviceCheck(ServiceCheckParams params) =>
       _interface.serviceCheck(params);
 

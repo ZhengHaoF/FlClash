@@ -66,6 +66,8 @@ const (
 	clearEffectMethod              CoreMethod = "clearEffect"
 	watchRouteMethod               CoreMethod = "watchRoute"
 	checkRoutesMethod              CoreMethod = "checkRoutes"
+	cfScanMethod                   CoreMethod = "cfScan"
+	cfDetectMethod                 CoreMethod = "cfDetect"
 )
 
 type MessageType string
@@ -258,6 +260,9 @@ type nodeView struct {
 	Name         string `json:"name"`
 	Type         string `json:"type"`
 	ProviderName string `json:"provider-name,omitempty"`
+	// The host a single node dials, so the app can pair it with its hosts
+	// overrides; a group has no address of its own.
+	Server string `json:"server,omitempty"`
 }
 
 type GeoUpdateStatus struct {
