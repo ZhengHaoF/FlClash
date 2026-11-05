@@ -214,12 +214,16 @@ Future<int> _package(
     runInShell: Platform.isWindows,
   );
 
-  process.stdout.listen((data) {
-    stdout.write(utf8.decode(data));
-  });
-  process.stderr.listen((data) {
-    stderr.write(utf8.decode(data));
-  });
+  // Child output may carry bytes outside UTF-8 — tools writing in the console
+  // code page — and a multi-byte character can split across stream chunks.
+  // The incremental decoder carries partial sequences over and renders the
+  // malformed bytes as replacement characters instead of killing the build.
+  process.stdout
+      .transform(const Utf8Decoder(allowMalformed: true))
+      .listen(stdout.write);
+  process.stderr
+      .transform(const Utf8Decoder(allowMalformed: true))
+      .listen(stderr.write);
   final exitCode = await process.exitCode;
   return exitCode;
 }
