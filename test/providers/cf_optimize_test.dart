@@ -280,6 +280,62 @@ proxies:
       );
     });
 
+    test(
+      'an outside domain without a measured answer pins its own address',
+      () {
+        expect(
+          buildCfHostEntries(
+            ['out.example'],
+            scanResults: scanItems,
+            testResults: const {},
+            detectResults: {
+              ...detectResults,
+              'out.example': const CfDetectItem(
+                domain: 'out.example',
+                ips: ['43.207.158.98'],
+              ),
+            },
+          ),
+          {'out.example': '43.207.158.98'},
+        );
+      },
+    );
+
+    test('the fallback prefers the routable IPv4 answer', () {
+      expect(
+        buildCfHostEntries(
+          ['v6.example'],
+          scanResults: const [],
+          testResults: const {},
+          detectResults: const {
+            'v6.example': CfDetectItem(
+              domain: 'v6.example',
+              ips: ['2401:b60:35::1', '43.207.158.98'],
+            ),
+          },
+        ),
+        {'v6.example': '43.207.158.98'},
+      );
+    });
+
+    test('a failed lookup is never pinned', () {
+      expect(
+        buildCfHostEntries(
+          ['failed.example'],
+          scanResults: const [],
+          testResults: const {},
+          detectResults: const {
+            'failed.example': CfDetectItem(
+              domain: 'failed.example',
+              error: 'boom',
+              ips: ['1.2.3.4'],
+            ),
+          },
+        ),
+        isEmpty,
+      );
+    });
+
     test('writes nothing without results or domains', () {
       expect(
         buildCfHostEntries(

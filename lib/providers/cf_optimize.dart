@@ -230,7 +230,10 @@ List<String> extractProfileServerDomains(String content) {
 /// One address per domain: a hosts entry carrying several is dialed at random.
 /// A domain's candidates are the addresses its own DNS answered with and the
 /// Core measured, plus the scan's answers when the domain sits inside
-/// Cloudflare's ranges; the fastest candidate wins.
+/// Cloudflare's ranges; the fastest candidate wins. A domain outside the
+/// ranges with no measured answer still pins to what its DNS answered — the
+/// address a node's dial reaches anyway — so the run serves it instead of
+/// skipping it.
 Map<String, String> buildCfHostEntries(
   Iterable<String> domains, {
   required List<CfScanItem> scanResults,
@@ -244,13 +247,32 @@ Map<String, String> buildCfHostEntries(
       ...testResults[domain] ?? const <CfScanItem>[],
       if (item != null && item.error == null && item.inRanges) ...scanResults,
     ];
-    if (candidates.isEmpty) {
+    if (candidates.isNotEmpty) {
+      candidates.sort(compareCfScanItems);
+      entries[domain] = candidates.first.ip;
       continue;
     }
-    candidates.sort(compareCfScanItems);
-    entries[domain] = candidates.first.ip;
+    if (item == null || item.error != null || item.inRanges) {
+      continue;
+    }
+    final ip = _fallbackResolvedIp(item.ips);
+    if (ip != null) {
+      entries[domain] = ip;
+    }
   }
   return entries;
+}
+
+// An address the machine cannot route strands the dial, so the IPv4 answer
+// leads and a v6-only domain keeps its first answer.
+String? _fallbackResolvedIp(List<String> ips) {
+  final addresses = [for (final ip in ips) ?InternetAddress.tryParse(ip)];
+  for (final address in addresses) {
+    if (address.type == InternetAddressType.IPv4) {
+      return address.address;
+    }
+  }
+  return addresses.isEmpty ? null : addresses.first.address;
 }
 
 /// The Core's loss-first ranking: loss rate, then delay, then the address.
