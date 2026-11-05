@@ -489,7 +489,7 @@ class _CfOptimizeViewState extends ConsumerState<CfOptimizeView> {
     return Scaffold(
       title: appLocalizations.cfOptimize,
       body: Builder(
-        builder: (context) => ListView.builder(
+        builder: (context) => PrismListView(
           itemCount: items.length,
           itemBuilder: (_, index) => items[index],
           padding: EdgeInsets.only(
