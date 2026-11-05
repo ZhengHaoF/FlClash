@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.9.4 (2026-11-05)
+
+**Features**
+
+- **cf-optimize** Fetch and cache Cloudflare IPv4 ranges (503e6f7)
+- **cf-optimize** Cloudflare scan that pins the fastest entrance in hosts (9251ff5)
+
 ## v0.9.3 (2026-11-04)
 
 **Features**

@@ -2,6 +2,29 @@
   "schemaVersion": 2,
   "versions": [
     {
+      "version": "0.9.4",
+      "tag": "v0.9.4",
+      "date": "2026-11-05",
+      "prerelease": false,
+      "groups": [
+        {
+          "type": "feat",
+          "entries": [
+            {
+              "id": "503e6f7",
+              "scope": "cf-optimize",
+              "text": "Fetch and cache Cloudflare IPv4 ranges"
+            },
+            {
+              "id": "9251ff5",
+              "scope": "cf-optimize",
+              "text": "Cloudflare scan that pins the fastest entrance in hosts"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "version": "0.9.3",
       "tag": "v0.9.3",
       "date": "2026-11-04",
