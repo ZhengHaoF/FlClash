@@ -30,13 +30,12 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m3(count, skipped) =>
       "${count} to add, ${skipped} skipped as existing";
 
-  static String m4(count) =>
+  static String m4(count) => "Applied to ${count} domains";
+
+  static String m5(count) =>
       "${count} mappings will be removed. Other hosts entries stay.";
 
-  static String m5(count) => "${count} matched";
-
-  static String m6(domains) =>
-      "These domains resolve outside Cloudflare\'s ranges, so a pinned entrance may not serve them: ${domains}. Apply anyway?";
+  static String m6(count) => "${count} matched";
 
   static String m7(count) => "${count} ranges";
 
@@ -45,7 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m9(sampled) => "${sampled} sampled";
 
   static String m10(domains) =>
-      "These domains have not been detected yet, so nothing confirms they answer to a Cloudflare edge: ${domains}. Apply anyway?";
+      "No reachable address was measured for these domains, so they were skipped: ${domains}";
 
   static String m11(detail) => "Couldn\'t clear the data: ${detail}";
 
@@ -495,6 +494,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cannotSave": MessageLookupByLibrary.simpleMessage("Can\'t save"),
     "certificate": MessageLookupByLibrary.simpleMessage("Certificate"),
     "cfAddDomain": MessageLookupByLibrary.simpleMessage("Add a domain"),
+    "cfAppliedCount": m4,
     "cfAppliedHint": MessageLookupByLibrary.simpleMessage(
       "Mappings for the candidate domains above. Applying one re-applies the profile within a couple of seconds, which drops running connections; other hosts entries stay in General settings.",
     ),
@@ -502,10 +502,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "Active host mappings",
     ),
     "cfClearAll": MessageLookupByLibrary.simpleMessage("Clear all"),
-    "cfClearAllTip": m4,
-    "cfDetect": MessageLookupByLibrary.simpleMessage("Detect"),
+    "cfClearAllTip": m5,
     "cfDetectFailed": MessageLookupByLibrary.simpleMessage("Detect failed"),
-    "cfDetecting": MessageLookupByLibrary.simpleMessage("Detecting…"),
+    "cfDetecting": MessageLookupByLibrary.simpleMessage(
+      "Detecting and testing…",
+    ),
     "cfDomains": MessageLookupByLibrary.simpleMessage("Candidate domains"),
     "cfFilter": MessageLookupByLibrary.simpleMessage("Filter"),
     "cfFilterDesc": MessageLookupByLibrary.simpleMessage(
@@ -513,7 +514,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cfHowItWorks": MessageLookupByLibrary.simpleMessage("How it works"),
     "cfInRanges": MessageLookupByLibrary.simpleMessage("Cloudflare range"),
-    "cfMatchedFilter": m5,
+    "cfMatchedFilter": m6,
     "cfMaxDelay": MessageLookupByLibrary.simpleMessage("Max latency (ms)"),
     "cfMaxLoss": MessageLookupByLibrary.simpleMessage("Max loss (%)"),
     "cfMinDelay": MessageLookupByLibrary.simpleMessage("Min latency (ms)"),
@@ -527,7 +528,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfOptimizeDesc": MessageLookupByLibrary.simpleMessage(
       "Scans Cloudflare\'s announced ranges for the entrances fastest on your line, then pins the selected domains\' entrances through the app\'s hosts overrides. Only the entry IP changes; the TLS SNI and Host header keep the domain. Results age with the network, so rescan now and then.",
     ),
-    "cfOutsideRangesTip": m6,
     "cfRanges": MessageLookupByLibrary.simpleMessage("Ranges"),
     "cfRangesBuiltIn": MessageLookupByLibrary.simpleMessage(
       "Built-in ranges; not updated from Cloudflare yet",
@@ -539,7 +539,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfSampleCount": MessageLookupByLibrary.simpleMessage(
       "Sample count (1-4096)",
     ),
-    "cfScanFirst": MessageLookupByLibrary.simpleMessage("Run a scan first"),
     "cfScanResult": MessageLookupByLibrary.simpleMessage("Scan results"),
     "cfScanSampled": m9,
     "cfScanSettings": MessageLookupByLibrary.simpleMessage("Scan"),
@@ -547,8 +546,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfSelectDomainFirst": MessageLookupByLibrary.simpleMessage(
       "Select at least one domain first",
     ),
+    "cfSkippedDomainsTip": m10,
     "cfStartScan": MessageLookupByLibrary.simpleMessage("Start scan"),
-    "cfUndetectedTip": m10,
+    "cfTestAndApply": MessageLookupByLibrary.simpleMessage("Test and apply"),
     "changeProxyFailedTip": MessageLookupByLibrary.simpleMessage(
       "Failed to switch proxy; the previous selection has been restored",
     ),
@@ -1178,9 +1178,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "installCertificateSuccess": MessageLookupByLibrary.simpleMessage(
       "Certificate installed",
     ),
-    "installedAppsPermissionDeniedMessage": MessageLookupByLibrary.simpleMessage(
-      "The app list permission was denied, so installed apps cannot be listed. Please grant it manually in system settings.",
-    ),
+    "installedAppsPermissionDeniedMessage":
+        MessageLookupByLibrary.simpleMessage(
+          "The app list permission was denied, so installed apps cannot be listed. Please grant it manually in system settings.",
+        ),
     "installedAppsPermissionDesc": MessageLookupByLibrary.simpleMessage(
       "This system hides the installed app list until the permission is granted. Authorize it to configure the per-app proxy.",
     ),

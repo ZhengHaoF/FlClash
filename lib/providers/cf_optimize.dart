@@ -34,20 +34,74 @@ class CfOptimize extends _$CfOptimize {
     }
   }
 
-  Future<void> detect(List<String> domains, List<String> ranges) async {
+  Future<void> detect(
+    List<String> domains,
+    List<String> ranges, {
+    required String port,
+  }) async {
     if (state.detecting || domains.isEmpty) {
       return;
     }
-    state = state.copyWith(detecting: true, error: null);
+    state = state.copyWith(detecting: true, error: null, testResults: const {});
     try {
-      final result = await ref
+      // The app's resolver and a sweep of public resolvers answer side by
+      // side: the union pools edges no single resolver hands out, which is
+      // what lets a domain outside Cloudflare's ranges find a reachable
+      // entrance at all.
+      final (detected, resolved) = await (
+        ref
+            .read(coreHandlerProvider)
+            .cfDetect(CfDetectParams(domains: domains, ranges: ranges)),
+        ref
+            .read(coreHandlerProvider)
+            .cfResolve(CfResolveParams(domains: domains)),
+      ).wait;
+      final detectResults = {
+        for (final item in detected?.results ?? const <CfDetectItem>[])
+          item.domain: item,
+      };
+      state = state.copyWith(detectResults: detectResults);
+      final pool = <String, List<String>>{};
+      void addIps(String domain, Iterable<String> ips) {
+        pool[domain] = {...pool[domain] ?? const <String>[], ...ips}.toList();
+      }
+
+      for (final item in detectResults.values) {
+        if (item.ips.isNotEmpty) {
+          addIps(item.domain, item.ips);
+        }
+      }
+      for (final item in resolved?.results ?? const <CfResolveItem>[]) {
+        if (item.ips.isNotEmpty) {
+          addIps(item.domain, item.ips);
+        }
+      }
+      final targets = [
+        for (final entry in pool.entries)
+          CfTestIpsTarget(domain: entry.key, ips: entry.value),
+      ];
+      if (targets.isEmpty) {
+        state = state.copyWith(detecting: false);
+        return;
+      }
+      // The lookups just answered over the same path a node's dial takes, so
+      // the addresses are measured while they are fresh.
+      final tested = await ref
           .read(coreHandlerProvider)
-          .cfDetect(CfDetectParams(domains: domains, ranges: ranges));
+          .cfTestIps(
+            CfTestIpsParams(
+              targets: targets,
+              port: port,
+              concurrency: 128,
+              testCount: 2,
+              timeout: 1500,
+            ),
+          );
       state = state.copyWith(
         detecting: false,
-        detectResults: {
-          for (final item in result?.results ?? const <CfDetectItem>[])
-            item.domain: item,
+        testResults: {
+          for (final item in tested?.results ?? const <CfTestIpsItem>[])
+            if (item.results.isNotEmpty) item.domain: item.results,
         },
       );
     } catch (error) {
@@ -173,48 +227,41 @@ List<String> extractProfileServerDomains(String content) {
   return domains.toList(growable: false);
 }
 
-/// One address per domain: a hosts entry carrying several is dialed at random,
-/// so only the head of the Core's loss-first list is written.
+/// One address per domain: a hosts entry carrying several is dialed at random.
+/// A domain's candidates are the addresses its own DNS answered with and the
+/// Core measured, plus the scan's answers when the domain sits inside
+/// Cloudflare's ranges; the fastest candidate wins.
 Map<String, String> buildCfHostEntries(
-  Iterable<String> domains,
-  List<CfScanItem> scanResults,
-) {
-  if (scanResults.isEmpty) {
-    return const {};
-  }
-  final best = scanResults.first.ip;
-  return {for (final domain in domains) domain: best};
-}
-
-/// The domains a detect run placed outside Cloudflare's announced ranges:
-/// pinning one points a working name at an edge that does not serve it.
-List<String> cfDomainsOutsideRanges(
-  Iterable<String> domains,
-  Map<String, CfDetectItem> detectResults,
-) {
-  final outside = <String>[];
+  Iterable<String> domains, {
+  required List<CfScanItem> scanResults,
+  required Map<String, List<CfScanItem>> testResults,
+  required Map<String, CfDetectItem> detectResults,
+}) {
+  final entries = <String, String>{};
   for (final domain in domains) {
     final item = detectResults[domain];
-    if (item != null && item.error == null && !item.inRanges) {
-      outside.add(domain);
+    final candidates = [
+      ...testResults[domain] ?? const <CfScanItem>[],
+      if (item != null && item.error == null && item.inRanges) ...scanResults,
+    ];
+    if (candidates.isEmpty) {
+      continue;
     }
+    candidates.sort(compareCfScanItems);
+    entries[domain] = candidates.first.ip;
   }
-  return outside;
+  return entries;
 }
 
-/// What no lookup has answered for, or answered with an error.
-List<String> cfDomainsNotDetected(
-  Iterable<String> domains,
-  Map<String, CfDetectItem> detectResults,
-) {
-  final unresolved = <String>[];
-  for (final domain in domains) {
-    final item = detectResults[domain];
-    if (item == null || item.error != null) {
-      unresolved.add(domain);
-    }
+/// The Core's loss-first ranking: loss rate, then delay, then the address.
+int compareCfScanItems(CfScanItem a, CfScanItem b) {
+  if (a.lossRate != b.lossRate) {
+    return a.lossRate.compareTo(b.lossRate);
   }
-  return unresolved;
+  if (a.delayMs != b.delayMs) {
+    return a.delayMs.compareTo(b.delayMs);
+  }
+  return a.ip.compareTo(b.ip);
 }
 
 /// Mirrors mihomo's hosts trie: a literal label wins, then `*`, then a

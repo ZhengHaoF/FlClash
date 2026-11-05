@@ -29,13 +29,12 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m3(count, skipped) =>
       "Будет добавлено: ${count}, пропущено (уже есть): ${skipped}";
 
-  static String m4(count) =>
+  static String m4(count) => "Применено доменов: ${count}";
+
+  static String m5(count) =>
       "Будет удалено сопоставлений: ${count}. Прочие записи hosts останутся.";
 
-  static String m5(count) => "прошло ${count}";
-
-  static String m6(domains) =>
-      "Эти домены разрешаются вне диапазонов Cloudflare, поэтому закреплённый IP входа может их не обслуживать: ${domains}. Всё равно применить?";
+  static String m6(count) => "прошло ${count}";
 
   static String m7(count) => "диапазонов: ${count}";
 
@@ -44,7 +43,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m9(sampled) => "проверено ${sampled}";
 
   static String m10(domains) =>
-      "Эти домены ещё не проверены, ничего не подтверждает, что их обслуживает Cloudflare: ${domains}. Всё равно применить?";
+      "Для этих доменов не удалось измерить доступный адрес, они пропущены: ${domains}";
 
   static String m11(detail) => "Не удалось очистить данные: ${detail}";
 
@@ -514,6 +513,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cannotSave": MessageLookupByLibrary.simpleMessage("Не удалось сохранить"),
     "certificate": MessageLookupByLibrary.simpleMessage("Сертификат"),
     "cfAddDomain": MessageLookupByLibrary.simpleMessage("Добавить домен"),
+    "cfAppliedCount": m4,
     "cfAppliedHint": MessageLookupByLibrary.simpleMessage(
       "Сопоставления для кандидатов выше. Применение перезапускает профиль примерно через две секунду, и активные соединения прерываются. Прочие записи hosts остаются в общих настройках.",
     ),
@@ -521,12 +521,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "Активные сопоставления hosts",
     ),
     "cfClearAll": MessageLookupByLibrary.simpleMessage("Очистить всё"),
-    "cfClearAllTip": m4,
-    "cfDetect": MessageLookupByLibrary.simpleMessage("Определить"),
+    "cfClearAllTip": m5,
     "cfDetectFailed": MessageLookupByLibrary.simpleMessage(
       "Не удалось определить",
     ),
-    "cfDetecting": MessageLookupByLibrary.simpleMessage("Определение…"),
+    "cfDetecting": MessageLookupByLibrary.simpleMessage(
+      "Определение и проверка…",
+    ),
     "cfDomains": MessageLookupByLibrary.simpleMessage("Кандидаты доменов"),
     "cfFilter": MessageLookupByLibrary.simpleMessage("Фильтр"),
     "cfFilterDesc": MessageLookupByLibrary.simpleMessage(
@@ -534,7 +535,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cfHowItWorks": MessageLookupByLibrary.simpleMessage("Как это работает"),
     "cfInRanges": MessageLookupByLibrary.simpleMessage("Диапазон Cloudflare"),
-    "cfMatchedFilter": m5,
+    "cfMatchedFilter": m6,
     "cfMaxDelay": MessageLookupByLibrary.simpleMessage("Макс. задержка (мс)"),
     "cfMaxLoss": MessageLookupByLibrary.simpleMessage("Макс. потери (%)"),
     "cfMinDelay": MessageLookupByLibrary.simpleMessage("Мин. задержка (мс)"),
@@ -548,7 +549,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfOptimizeDesc": MessageLookupByLibrary.simpleMessage(
       "Сканирует объявленные Cloudflare диапазоны в поиске самых быстрых входов для вашей линии и закрепляет входы выбранных доменов через hosts-переопределения приложения. Меняется только IP входа; TLS SNI и заголовок Host сохраняют домен. Результаты устаревают вместе с сетью — периодически повторяйте сканирование.",
     ),
-    "cfOutsideRangesTip": m6,
     "cfRanges": MessageLookupByLibrary.simpleMessage("Диапазоны Cloudflare"),
     "cfRangesBuiltIn": MessageLookupByLibrary.simpleMessage(
       "Встроенные диапазоны; ещё не обновлялись с Cloudflare",
@@ -562,9 +562,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfSampleCount": MessageLookupByLibrary.simpleMessage(
       "Количество проб (1-4096)",
     ),
-    "cfScanFirst": MessageLookupByLibrary.simpleMessage(
-      "Сначала выполните сканирование",
-    ),
     "cfScanResult": MessageLookupByLibrary.simpleMessage(
       "Результаты сканирования",
     ),
@@ -574,8 +571,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfSelectDomainFirst": MessageLookupByLibrary.simpleMessage(
       "Сначала выберите хотя бы один домен",
     ),
+    "cfSkippedDomainsTip": m10,
     "cfStartScan": MessageLookupByLibrary.simpleMessage("Начать сканирование"),
-    "cfUndetectedTip": m10,
+    "cfTestAndApply": MessageLookupByLibrary.simpleMessage(
+      "Измерить и применить",
+    ),
     "changeProxyFailedTip": MessageLookupByLibrary.simpleMessage(
       "Не удалось переключить прокси; восстановлен предыдущий выбор",
     ),
@@ -1235,9 +1235,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "installCertificateSuccess": MessageLookupByLibrary.simpleMessage(
       "Сертификат установлен",
     ),
-    "installedAppsPermissionDeniedMessage": MessageLookupByLibrary.simpleMessage(
-      "Разрешение на список приложений отклонено, поэтому установленные приложения недоступны. Предоставьте его вручную в системных настройках.",
-    ),
+    "installedAppsPermissionDeniedMessage":
+        MessageLookupByLibrary.simpleMessage(
+          "Разрешение на список приложений отклонено, поэтому установленные приложения недоступны. Предоставьте его вручную в системных настройках.",
+        ),
     "installedAppsPermissionDesc": MessageLookupByLibrary.simpleMessage(
       "Эта система не выдаёт список установленных приложений без разрешения. Предоставьте его, чтобы настроить прокси для отдельных приложений.",
     ),

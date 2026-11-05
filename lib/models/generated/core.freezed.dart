@@ -8978,6 +8978,1977 @@ as List<CfDetectItem>,
 
 
 /// @nodoc
+mixin _$CfTestIpsTarget {
+
+ String get domain; List<String> get ips;
+/// Create a copy of CfTestIpsTarget
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CfTestIpsTargetCopyWith<CfTestIpsTarget> get copyWith => _$CfTestIpsTargetCopyWithImpl<CfTestIpsTarget>(this as CfTestIpsTarget, _$identity);
+
+  /// Serializes this CfTestIpsTarget to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as CfTestIpsTarget;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CfTestIpsTarget&&(identical(other.domain, _this.domain) || other.domain == _this.domain)&&const DeepCollectionEquality().equals(other.ips, _this.ips));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+  final _this = this as CfTestIpsTarget;
+  return Object.hash(runtimeType,_this.domain,const DeepCollectionEquality().hash(_this.ips));
+}
+
+@override
+String toString() {
+  final _this = this as CfTestIpsTarget;
+  return 'CfTestIpsTarget(domain: ${_this.domain}, ips: ${_this.ips})';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CfTestIpsTargetCopyWith<$Res>  {
+  factory $CfTestIpsTargetCopyWith(CfTestIpsTarget value, $Res Function(CfTestIpsTarget) _then) = _$CfTestIpsTargetCopyWithImpl;
+@useResult
+$Res call({
+ String domain, List<String> ips
+});
+
+
+
+
+}
+/// @nodoc
+class _$CfTestIpsTargetCopyWithImpl<$Res>
+    implements $CfTestIpsTargetCopyWith<$Res> {
+  _$CfTestIpsTargetCopyWithImpl(this._self, this._then);
+
+  final CfTestIpsTarget _self;
+  final $Res Function(CfTestIpsTarget) _then;
+
+/// Create a copy of CfTestIpsTarget
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? domain = null,Object? ips = null,}) {
+  return _then(CfTestIpsTarget(
+domain: null == domain ? _self.domain : domain // ignore: cast_nullable_to_non_nullable
+as String,ips: null == ips ? _self.ips : ips // ignore: cast_nullable_to_non_nullable
+as List<String>,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [CfTestIpsTarget].
+extension CfTestIpsTargetPatterns on CfTestIpsTarget {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _CfTestIpsTarget value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _CfTestIpsTarget() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _CfTestIpsTarget value)  $default,){
+final _that = this;
+switch (_that) {
+case _CfTestIpsTarget():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _CfTestIpsTarget value)?  $default,){
+final _that = this;
+switch (_that) {
+case _CfTestIpsTarget() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String domain,  List<String> ips)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _CfTestIpsTarget() when $default != null:
+return $default(_that.domain,_that.ips);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String domain,  List<String> ips)  $default,) {final _that = this;
+switch (_that) {
+case _CfTestIpsTarget():
+return $default(_that.domain,_that.ips);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String domain,  List<String> ips)?  $default,) {final _that = this;
+switch (_that) {
+case _CfTestIpsTarget() when $default != null:
+return $default(_that.domain,_that.ips);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _CfTestIpsTarget implements CfTestIpsTarget {
+  const _CfTestIpsTarget({required this.domain,  List<String> ips = const []}): _ips = ips;
+  factory _CfTestIpsTarget.fromJson(Map<String, dynamic> json) => _$CfTestIpsTargetFromJson(json);
+
+@override final  String domain;
+ final  List<String> _ips;
+@override@JsonKey() List<String> get ips {
+  if (_ips is EqualUnmodifiableListView) return _ips;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_ips);
+}
+
+
+/// Create a copy of CfTestIpsTarget
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$CfTestIpsTargetCopyWith<_CfTestIpsTarget> get copyWith => __$CfTestIpsTargetCopyWithImpl<_CfTestIpsTarget>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$CfTestIpsTargetToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CfTestIpsTarget&&(identical(other.domain, domain) || other.domain == domain)&&const DeepCollectionEquality().equals(other.ips, _ips));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+    return Object.hash(runtimeType,domain,const DeepCollectionEquality().hash(_ips));
+}
+
+@override
+String toString() {
+    return 'CfTestIpsTarget(domain: $domain, ips: $ips)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$CfTestIpsTargetCopyWith<$Res> implements $CfTestIpsTargetCopyWith<$Res> {
+  factory _$CfTestIpsTargetCopyWith(_CfTestIpsTarget value, $Res Function(_CfTestIpsTarget) _then) = __$CfTestIpsTargetCopyWithImpl;
+@override @useResult
+$Res call({
+ String domain, List<String> ips
+});
+
+
+
+
+}
+/// @nodoc
+class __$CfTestIpsTargetCopyWithImpl<$Res>
+    implements _$CfTestIpsTargetCopyWith<$Res> {
+  __$CfTestIpsTargetCopyWithImpl(this._self, this._then);
+
+  final _CfTestIpsTarget _self;
+  final $Res Function(_CfTestIpsTarget) _then;
+
+/// Create a copy of CfTestIpsTarget
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? domain = null,Object? ips = null,}) {
+  return _then(_CfTestIpsTarget(
+domain: null == domain ? _self.domain : domain // ignore: cast_nullable_to_non_nullable
+as String,ips: null == ips ? _self._ips : ips // ignore: cast_nullable_to_non_nullable
+as List<String>,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$CfTestIpsParams {
+
+ List<CfTestIpsTarget> get targets; String get port; int get concurrency;@JsonKey(name: 'test-count') int get testCount; int get timeout;
+/// Create a copy of CfTestIpsParams
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CfTestIpsParamsCopyWith<CfTestIpsParams> get copyWith => _$CfTestIpsParamsCopyWithImpl<CfTestIpsParams>(this as CfTestIpsParams, _$identity);
+
+  /// Serializes this CfTestIpsParams to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as CfTestIpsParams;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CfTestIpsParams&&const DeepCollectionEquality().equals(other.targets, _this.targets)&&(identical(other.port, _this.port) || other.port == _this.port)&&(identical(other.concurrency, _this.concurrency) || other.concurrency == _this.concurrency)&&(identical(other.testCount, _this.testCount) || other.testCount == _this.testCount)&&(identical(other.timeout, _this.timeout) || other.timeout == _this.timeout));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+  final _this = this as CfTestIpsParams;
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.targets),_this.port,_this.concurrency,_this.testCount,_this.timeout);
+}
+
+@override
+String toString() {
+  final _this = this as CfTestIpsParams;
+  return 'CfTestIpsParams(targets: ${_this.targets}, port: ${_this.port}, concurrency: ${_this.concurrency}, testCount: ${_this.testCount}, timeout: ${_this.timeout})';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CfTestIpsParamsCopyWith<$Res>  {
+  factory $CfTestIpsParamsCopyWith(CfTestIpsParams value, $Res Function(CfTestIpsParams) _then) = _$CfTestIpsParamsCopyWithImpl;
+@useResult
+$Res call({
+ List<CfTestIpsTarget> targets, String port, int concurrency,@JsonKey(name: 'test-count') int testCount, int timeout
+});
+
+
+
+
+}
+/// @nodoc
+class _$CfTestIpsParamsCopyWithImpl<$Res>
+    implements $CfTestIpsParamsCopyWith<$Res> {
+  _$CfTestIpsParamsCopyWithImpl(this._self, this._then);
+
+  final CfTestIpsParams _self;
+  final $Res Function(CfTestIpsParams) _then;
+
+/// Create a copy of CfTestIpsParams
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? targets = null,Object? port = null,Object? concurrency = null,Object? testCount = null,Object? timeout = null,}) {
+  return _then(CfTestIpsParams(
+targets: null == targets ? _self.targets : targets // ignore: cast_nullable_to_non_nullable
+as List<CfTestIpsTarget>,port: null == port ? _self.port : port // ignore: cast_nullable_to_non_nullable
+as String,concurrency: null == concurrency ? _self.concurrency : concurrency // ignore: cast_nullable_to_non_nullable
+as int,testCount: null == testCount ? _self.testCount : testCount // ignore: cast_nullable_to_non_nullable
+as int,timeout: null == timeout ? _self.timeout : timeout // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [CfTestIpsParams].
+extension CfTestIpsParamsPatterns on CfTestIpsParams {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _CfTestIpsParams value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _CfTestIpsParams() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _CfTestIpsParams value)  $default,){
+final _that = this;
+switch (_that) {
+case _CfTestIpsParams():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _CfTestIpsParams value)?  $default,){
+final _that = this;
+switch (_that) {
+case _CfTestIpsParams() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<CfTestIpsTarget> targets,  String port,  int concurrency, @JsonKey(name: 'test-count')  int testCount,  int timeout)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _CfTestIpsParams() when $default != null:
+return $default(_that.targets,_that.port,_that.concurrency,_that.testCount,_that.timeout);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<CfTestIpsTarget> targets,  String port,  int concurrency, @JsonKey(name: 'test-count')  int testCount,  int timeout)  $default,) {final _that = this;
+switch (_that) {
+case _CfTestIpsParams():
+return $default(_that.targets,_that.port,_that.concurrency,_that.testCount,_that.timeout);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<CfTestIpsTarget> targets,  String port,  int concurrency, @JsonKey(name: 'test-count')  int testCount,  int timeout)?  $default,) {final _that = this;
+switch (_that) {
+case _CfTestIpsParams() when $default != null:
+return $default(_that.targets,_that.port,_that.concurrency,_that.testCount,_that.timeout);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _CfTestIpsParams implements CfTestIpsParams {
+  const _CfTestIpsParams({ List<CfTestIpsTarget> targets = const [], required this.port, this.concurrency = 0, @JsonKey(name: 'test-count') this.testCount = 0, this.timeout = 0}): _targets = targets;
+  factory _CfTestIpsParams.fromJson(Map<String, dynamic> json) => _$CfTestIpsParamsFromJson(json);
+
+ final  List<CfTestIpsTarget> _targets;
+@override@JsonKey() List<CfTestIpsTarget> get targets {
+  if (_targets is EqualUnmodifiableListView) return _targets;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_targets);
+}
+
+@override final  String port;
+@override@JsonKey() final  int concurrency;
+@override@JsonKey(name: 'test-count') final  int testCount;
+@override@JsonKey() final  int timeout;
+
+/// Create a copy of CfTestIpsParams
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$CfTestIpsParamsCopyWith<_CfTestIpsParams> get copyWith => __$CfTestIpsParamsCopyWithImpl<_CfTestIpsParams>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$CfTestIpsParamsToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CfTestIpsParams&&const DeepCollectionEquality().equals(other.targets, _targets)&&(identical(other.port, port) || other.port == port)&&(identical(other.concurrency, concurrency) || other.concurrency == concurrency)&&(identical(other.testCount, testCount) || other.testCount == testCount)&&(identical(other.timeout, timeout) || other.timeout == timeout));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_targets),port,concurrency,testCount,timeout);
+}
+
+@override
+String toString() {
+    return 'CfTestIpsParams(targets: $targets, port: $port, concurrency: $concurrency, testCount: $testCount, timeout: $timeout)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$CfTestIpsParamsCopyWith<$Res> implements $CfTestIpsParamsCopyWith<$Res> {
+  factory _$CfTestIpsParamsCopyWith(_CfTestIpsParams value, $Res Function(_CfTestIpsParams) _then) = __$CfTestIpsParamsCopyWithImpl;
+@override @useResult
+$Res call({
+ List<CfTestIpsTarget> targets, String port, int concurrency,@JsonKey(name: 'test-count') int testCount, int timeout
+});
+
+
+
+
+}
+/// @nodoc
+class __$CfTestIpsParamsCopyWithImpl<$Res>
+    implements _$CfTestIpsParamsCopyWith<$Res> {
+  __$CfTestIpsParamsCopyWithImpl(this._self, this._then);
+
+  final _CfTestIpsParams _self;
+  final $Res Function(_CfTestIpsParams) _then;
+
+/// Create a copy of CfTestIpsParams
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? targets = null,Object? port = null,Object? concurrency = null,Object? testCount = null,Object? timeout = null,}) {
+  return _then(_CfTestIpsParams(
+targets: null == targets ? _self._targets : targets // ignore: cast_nullable_to_non_nullable
+as List<CfTestIpsTarget>,port: null == port ? _self.port : port // ignore: cast_nullable_to_non_nullable
+as String,concurrency: null == concurrency ? _self.concurrency : concurrency // ignore: cast_nullable_to_non_nullable
+as int,testCount: null == testCount ? _self.testCount : testCount // ignore: cast_nullable_to_non_nullable
+as int,timeout: null == timeout ? _self.timeout : timeout // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$CfTestIpsItem {
+
+ String get domain; List<CfScanItem> get results;
+/// Create a copy of CfTestIpsItem
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CfTestIpsItemCopyWith<CfTestIpsItem> get copyWith => _$CfTestIpsItemCopyWithImpl<CfTestIpsItem>(this as CfTestIpsItem, _$identity);
+
+  /// Serializes this CfTestIpsItem to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as CfTestIpsItem;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CfTestIpsItem&&(identical(other.domain, _this.domain) || other.domain == _this.domain)&&const DeepCollectionEquality().equals(other.results, _this.results));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+  final _this = this as CfTestIpsItem;
+  return Object.hash(runtimeType,_this.domain,const DeepCollectionEquality().hash(_this.results));
+}
+
+@override
+String toString() {
+  final _this = this as CfTestIpsItem;
+  return 'CfTestIpsItem(domain: ${_this.domain}, results: ${_this.results})';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CfTestIpsItemCopyWith<$Res>  {
+  factory $CfTestIpsItemCopyWith(CfTestIpsItem value, $Res Function(CfTestIpsItem) _then) = _$CfTestIpsItemCopyWithImpl;
+@useResult
+$Res call({
+ String domain, List<CfScanItem> results
+});
+
+
+
+
+}
+/// @nodoc
+class _$CfTestIpsItemCopyWithImpl<$Res>
+    implements $CfTestIpsItemCopyWith<$Res> {
+  _$CfTestIpsItemCopyWithImpl(this._self, this._then);
+
+  final CfTestIpsItem _self;
+  final $Res Function(CfTestIpsItem) _then;
+
+/// Create a copy of CfTestIpsItem
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? domain = null,Object? results = null,}) {
+  return _then(CfTestIpsItem(
+domain: null == domain ? _self.domain : domain // ignore: cast_nullable_to_non_nullable
+as String,results: null == results ? _self.results : results // ignore: cast_nullable_to_non_nullable
+as List<CfScanItem>,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [CfTestIpsItem].
+extension CfTestIpsItemPatterns on CfTestIpsItem {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _CfTestIpsItem value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _CfTestIpsItem() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _CfTestIpsItem value)  $default,){
+final _that = this;
+switch (_that) {
+case _CfTestIpsItem():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _CfTestIpsItem value)?  $default,){
+final _that = this;
+switch (_that) {
+case _CfTestIpsItem() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String domain,  List<CfScanItem> results)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _CfTestIpsItem() when $default != null:
+return $default(_that.domain,_that.results);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String domain,  List<CfScanItem> results)  $default,) {final _that = this;
+switch (_that) {
+case _CfTestIpsItem():
+return $default(_that.domain,_that.results);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String domain,  List<CfScanItem> results)?  $default,) {final _that = this;
+switch (_that) {
+case _CfTestIpsItem() when $default != null:
+return $default(_that.domain,_that.results);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _CfTestIpsItem implements CfTestIpsItem {
+  const _CfTestIpsItem({required this.domain,  List<CfScanItem> results = const []}): _results = results;
+  factory _CfTestIpsItem.fromJson(Map<String, dynamic> json) => _$CfTestIpsItemFromJson(json);
+
+@override final  String domain;
+ final  List<CfScanItem> _results;
+@override@JsonKey() List<CfScanItem> get results {
+  if (_results is EqualUnmodifiableListView) return _results;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_results);
+}
+
+
+/// Create a copy of CfTestIpsItem
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$CfTestIpsItemCopyWith<_CfTestIpsItem> get copyWith => __$CfTestIpsItemCopyWithImpl<_CfTestIpsItem>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$CfTestIpsItemToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CfTestIpsItem&&(identical(other.domain, domain) || other.domain == domain)&&const DeepCollectionEquality().equals(other.results, _results));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+    return Object.hash(runtimeType,domain,const DeepCollectionEquality().hash(_results));
+}
+
+@override
+String toString() {
+    return 'CfTestIpsItem(domain: $domain, results: $results)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$CfTestIpsItemCopyWith<$Res> implements $CfTestIpsItemCopyWith<$Res> {
+  factory _$CfTestIpsItemCopyWith(_CfTestIpsItem value, $Res Function(_CfTestIpsItem) _then) = __$CfTestIpsItemCopyWithImpl;
+@override @useResult
+$Res call({
+ String domain, List<CfScanItem> results
+});
+
+
+
+
+}
+/// @nodoc
+class __$CfTestIpsItemCopyWithImpl<$Res>
+    implements _$CfTestIpsItemCopyWith<$Res> {
+  __$CfTestIpsItemCopyWithImpl(this._self, this._then);
+
+  final _CfTestIpsItem _self;
+  final $Res Function(_CfTestIpsItem) _then;
+
+/// Create a copy of CfTestIpsItem
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? domain = null,Object? results = null,}) {
+  return _then(_CfTestIpsItem(
+domain: null == domain ? _self.domain : domain // ignore: cast_nullable_to_non_nullable
+as String,results: null == results ? _self._results : results // ignore: cast_nullable_to_non_nullable
+as List<CfScanItem>,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$CfTestIpsResult {
+
+ List<CfTestIpsItem> get results;@JsonKey(name: 'elapsed-ms') int get elapsedMs;
+/// Create a copy of CfTestIpsResult
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CfTestIpsResultCopyWith<CfTestIpsResult> get copyWith => _$CfTestIpsResultCopyWithImpl<CfTestIpsResult>(this as CfTestIpsResult, _$identity);
+
+  /// Serializes this CfTestIpsResult to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as CfTestIpsResult;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CfTestIpsResult&&const DeepCollectionEquality().equals(other.results, _this.results)&&(identical(other.elapsedMs, _this.elapsedMs) || other.elapsedMs == _this.elapsedMs));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+  final _this = this as CfTestIpsResult;
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.results),_this.elapsedMs);
+}
+
+@override
+String toString() {
+  final _this = this as CfTestIpsResult;
+  return 'CfTestIpsResult(results: ${_this.results}, elapsedMs: ${_this.elapsedMs})';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CfTestIpsResultCopyWith<$Res>  {
+  factory $CfTestIpsResultCopyWith(CfTestIpsResult value, $Res Function(CfTestIpsResult) _then) = _$CfTestIpsResultCopyWithImpl;
+@useResult
+$Res call({
+ List<CfTestIpsItem> results,@JsonKey(name: 'elapsed-ms') int elapsedMs
+});
+
+
+
+
+}
+/// @nodoc
+class _$CfTestIpsResultCopyWithImpl<$Res>
+    implements $CfTestIpsResultCopyWith<$Res> {
+  _$CfTestIpsResultCopyWithImpl(this._self, this._then);
+
+  final CfTestIpsResult _self;
+  final $Res Function(CfTestIpsResult) _then;
+
+/// Create a copy of CfTestIpsResult
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? results = null,Object? elapsedMs = null,}) {
+  return _then(CfTestIpsResult(
+results: null == results ? _self.results : results // ignore: cast_nullable_to_non_nullable
+as List<CfTestIpsItem>,elapsedMs: null == elapsedMs ? _self.elapsedMs : elapsedMs // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [CfTestIpsResult].
+extension CfTestIpsResultPatterns on CfTestIpsResult {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _CfTestIpsResult value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _CfTestIpsResult() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _CfTestIpsResult value)  $default,){
+final _that = this;
+switch (_that) {
+case _CfTestIpsResult():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _CfTestIpsResult value)?  $default,){
+final _that = this;
+switch (_that) {
+case _CfTestIpsResult() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<CfTestIpsItem> results, @JsonKey(name: 'elapsed-ms')  int elapsedMs)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _CfTestIpsResult() when $default != null:
+return $default(_that.results,_that.elapsedMs);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<CfTestIpsItem> results, @JsonKey(name: 'elapsed-ms')  int elapsedMs)  $default,) {final _that = this;
+switch (_that) {
+case _CfTestIpsResult():
+return $default(_that.results,_that.elapsedMs);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<CfTestIpsItem> results, @JsonKey(name: 'elapsed-ms')  int elapsedMs)?  $default,) {final _that = this;
+switch (_that) {
+case _CfTestIpsResult() when $default != null:
+return $default(_that.results,_that.elapsedMs);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _CfTestIpsResult implements CfTestIpsResult {
+  const _CfTestIpsResult({ List<CfTestIpsItem> results = const [], @JsonKey(name: 'elapsed-ms') this.elapsedMs = 0}): _results = results;
+  factory _CfTestIpsResult.fromJson(Map<String, dynamic> json) => _$CfTestIpsResultFromJson(json);
+
+ final  List<CfTestIpsItem> _results;
+@override@JsonKey() List<CfTestIpsItem> get results {
+  if (_results is EqualUnmodifiableListView) return _results;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_results);
+}
+
+@override@JsonKey(name: 'elapsed-ms') final  int elapsedMs;
+
+/// Create a copy of CfTestIpsResult
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$CfTestIpsResultCopyWith<_CfTestIpsResult> get copyWith => __$CfTestIpsResultCopyWithImpl<_CfTestIpsResult>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$CfTestIpsResultToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CfTestIpsResult&&const DeepCollectionEquality().equals(other.results, _results)&&(identical(other.elapsedMs, elapsedMs) || other.elapsedMs == elapsedMs));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_results),elapsedMs);
+}
+
+@override
+String toString() {
+    return 'CfTestIpsResult(results: $results, elapsedMs: $elapsedMs)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$CfTestIpsResultCopyWith<$Res> implements $CfTestIpsResultCopyWith<$Res> {
+  factory _$CfTestIpsResultCopyWith(_CfTestIpsResult value, $Res Function(_CfTestIpsResult) _then) = __$CfTestIpsResultCopyWithImpl;
+@override @useResult
+$Res call({
+ List<CfTestIpsItem> results,@JsonKey(name: 'elapsed-ms') int elapsedMs
+});
+
+
+
+
+}
+/// @nodoc
+class __$CfTestIpsResultCopyWithImpl<$Res>
+    implements _$CfTestIpsResultCopyWith<$Res> {
+  __$CfTestIpsResultCopyWithImpl(this._self, this._then);
+
+  final _CfTestIpsResult _self;
+  final $Res Function(_CfTestIpsResult) _then;
+
+/// Create a copy of CfTestIpsResult
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? results = null,Object? elapsedMs = null,}) {
+  return _then(_CfTestIpsResult(
+results: null == results ? _self._results : results // ignore: cast_nullable_to_non_nullable
+as List<CfTestIpsItem>,elapsedMs: null == elapsedMs ? _self.elapsedMs : elapsedMs // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$CfResolveParams {
+
+ List<String> get domains; List<String> get nameservers; int get timeout;
+/// Create a copy of CfResolveParams
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CfResolveParamsCopyWith<CfResolveParams> get copyWith => _$CfResolveParamsCopyWithImpl<CfResolveParams>(this as CfResolveParams, _$identity);
+
+  /// Serializes this CfResolveParams to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as CfResolveParams;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CfResolveParams&&const DeepCollectionEquality().equals(other.domains, _this.domains)&&const DeepCollectionEquality().equals(other.nameservers, _this.nameservers)&&(identical(other.timeout, _this.timeout) || other.timeout == _this.timeout));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+  final _this = this as CfResolveParams;
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.domains),const DeepCollectionEquality().hash(_this.nameservers),_this.timeout);
+}
+
+@override
+String toString() {
+  final _this = this as CfResolveParams;
+  return 'CfResolveParams(domains: ${_this.domains}, nameservers: ${_this.nameservers}, timeout: ${_this.timeout})';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CfResolveParamsCopyWith<$Res>  {
+  factory $CfResolveParamsCopyWith(CfResolveParams value, $Res Function(CfResolveParams) _then) = _$CfResolveParamsCopyWithImpl;
+@useResult
+$Res call({
+ List<String> domains, List<String> nameservers, int timeout
+});
+
+
+
+
+}
+/// @nodoc
+class _$CfResolveParamsCopyWithImpl<$Res>
+    implements $CfResolveParamsCopyWith<$Res> {
+  _$CfResolveParamsCopyWithImpl(this._self, this._then);
+
+  final CfResolveParams _self;
+  final $Res Function(CfResolveParams) _then;
+
+/// Create a copy of CfResolveParams
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? domains = null,Object? nameservers = null,Object? timeout = null,}) {
+  return _then(CfResolveParams(
+domains: null == domains ? _self.domains : domains // ignore: cast_nullable_to_non_nullable
+as List<String>,nameservers: null == nameservers ? _self.nameservers : nameservers // ignore: cast_nullable_to_non_nullable
+as List<String>,timeout: null == timeout ? _self.timeout : timeout // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [CfResolveParams].
+extension CfResolveParamsPatterns on CfResolveParams {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _CfResolveParams value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _CfResolveParams() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _CfResolveParams value)  $default,){
+final _that = this;
+switch (_that) {
+case _CfResolveParams():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _CfResolveParams value)?  $default,){
+final _that = this;
+switch (_that) {
+case _CfResolveParams() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<String> domains,  List<String> nameservers,  int timeout)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _CfResolveParams() when $default != null:
+return $default(_that.domains,_that.nameservers,_that.timeout);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<String> domains,  List<String> nameservers,  int timeout)  $default,) {final _that = this;
+switch (_that) {
+case _CfResolveParams():
+return $default(_that.domains,_that.nameservers,_that.timeout);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<String> domains,  List<String> nameservers,  int timeout)?  $default,) {final _that = this;
+switch (_that) {
+case _CfResolveParams() when $default != null:
+return $default(_that.domains,_that.nameservers,_that.timeout);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _CfResolveParams implements CfResolveParams {
+  const _CfResolveParams({ List<String> domains = const [],  List<String> nameservers = const [], this.timeout = 0}): _domains = domains,_nameservers = nameservers;
+  factory _CfResolveParams.fromJson(Map<String, dynamic> json) => _$CfResolveParamsFromJson(json);
+
+ final  List<String> _domains;
+@override@JsonKey() List<String> get domains {
+  if (_domains is EqualUnmodifiableListView) return _domains;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_domains);
+}
+
+ final  List<String> _nameservers;
+@override@JsonKey() List<String> get nameservers {
+  if (_nameservers is EqualUnmodifiableListView) return _nameservers;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_nameservers);
+}
+
+@override@JsonKey() final  int timeout;
+
+/// Create a copy of CfResolveParams
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$CfResolveParamsCopyWith<_CfResolveParams> get copyWith => __$CfResolveParamsCopyWithImpl<_CfResolveParams>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$CfResolveParamsToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CfResolveParams&&const DeepCollectionEquality().equals(other.domains, _domains)&&const DeepCollectionEquality().equals(other.nameservers, _nameservers)&&(identical(other.timeout, timeout) || other.timeout == timeout));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_domains),const DeepCollectionEquality().hash(_nameservers),timeout);
+}
+
+@override
+String toString() {
+    return 'CfResolveParams(domains: $domains, nameservers: $nameservers, timeout: $timeout)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$CfResolveParamsCopyWith<$Res> implements $CfResolveParamsCopyWith<$Res> {
+  factory _$CfResolveParamsCopyWith(_CfResolveParams value, $Res Function(_CfResolveParams) _then) = __$CfResolveParamsCopyWithImpl;
+@override @useResult
+$Res call({
+ List<String> domains, List<String> nameservers, int timeout
+});
+
+
+
+
+}
+/// @nodoc
+class __$CfResolveParamsCopyWithImpl<$Res>
+    implements _$CfResolveParamsCopyWith<$Res> {
+  __$CfResolveParamsCopyWithImpl(this._self, this._then);
+
+  final _CfResolveParams _self;
+  final $Res Function(_CfResolveParams) _then;
+
+/// Create a copy of CfResolveParams
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? domains = null,Object? nameservers = null,Object? timeout = null,}) {
+  return _then(_CfResolveParams(
+domains: null == domains ? _self._domains : domains // ignore: cast_nullable_to_non_nullable
+as List<String>,nameservers: null == nameservers ? _self._nameservers : nameservers // ignore: cast_nullable_to_non_nullable
+as List<String>,timeout: null == timeout ? _self.timeout : timeout // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$CfResolveItem {
+
+ String get domain; List<String> get ips; String? get error;
+/// Create a copy of CfResolveItem
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CfResolveItemCopyWith<CfResolveItem> get copyWith => _$CfResolveItemCopyWithImpl<CfResolveItem>(this as CfResolveItem, _$identity);
+
+  /// Serializes this CfResolveItem to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as CfResolveItem;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CfResolveItem&&(identical(other.domain, _this.domain) || other.domain == _this.domain)&&const DeepCollectionEquality().equals(other.ips, _this.ips)&&(identical(other.error, _this.error) || other.error == _this.error));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+  final _this = this as CfResolveItem;
+  return Object.hash(runtimeType,_this.domain,const DeepCollectionEquality().hash(_this.ips),_this.error);
+}
+
+@override
+String toString() {
+  final _this = this as CfResolveItem;
+  return 'CfResolveItem(domain: ${_this.domain}, ips: ${_this.ips}, error: ${_this.error})';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CfResolveItemCopyWith<$Res>  {
+  factory $CfResolveItemCopyWith(CfResolveItem value, $Res Function(CfResolveItem) _then) = _$CfResolveItemCopyWithImpl;
+@useResult
+$Res call({
+ String domain, List<String> ips, String? error
+});
+
+
+
+
+}
+/// @nodoc
+class _$CfResolveItemCopyWithImpl<$Res>
+    implements $CfResolveItemCopyWith<$Res> {
+  _$CfResolveItemCopyWithImpl(this._self, this._then);
+
+  final CfResolveItem _self;
+  final $Res Function(CfResolveItem) _then;
+
+/// Create a copy of CfResolveItem
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? domain = null,Object? ips = null,Object? error = freezed,}) {
+  return _then(CfResolveItem(
+domain: null == domain ? _self.domain : domain // ignore: cast_nullable_to_non_nullable
+as String,ips: null == ips ? _self.ips : ips // ignore: cast_nullable_to_non_nullable
+as List<String>,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [CfResolveItem].
+extension CfResolveItemPatterns on CfResolveItem {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _CfResolveItem value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _CfResolveItem() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _CfResolveItem value)  $default,){
+final _that = this;
+switch (_that) {
+case _CfResolveItem():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _CfResolveItem value)?  $default,){
+final _that = this;
+switch (_that) {
+case _CfResolveItem() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String domain,  List<String> ips,  String? error)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _CfResolveItem() when $default != null:
+return $default(_that.domain,_that.ips,_that.error);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String domain,  List<String> ips,  String? error)  $default,) {final _that = this;
+switch (_that) {
+case _CfResolveItem():
+return $default(_that.domain,_that.ips,_that.error);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String domain,  List<String> ips,  String? error)?  $default,) {final _that = this;
+switch (_that) {
+case _CfResolveItem() when $default != null:
+return $default(_that.domain,_that.ips,_that.error);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _CfResolveItem implements CfResolveItem {
+  const _CfResolveItem({required this.domain,  List<String> ips = const [], this.error}): _ips = ips;
+  factory _CfResolveItem.fromJson(Map<String, dynamic> json) => _$CfResolveItemFromJson(json);
+
+@override final  String domain;
+ final  List<String> _ips;
+@override@JsonKey() List<String> get ips {
+  if (_ips is EqualUnmodifiableListView) return _ips;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_ips);
+}
+
+@override final  String? error;
+
+/// Create a copy of CfResolveItem
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$CfResolveItemCopyWith<_CfResolveItem> get copyWith => __$CfResolveItemCopyWithImpl<_CfResolveItem>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$CfResolveItemToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CfResolveItem&&(identical(other.domain, domain) || other.domain == domain)&&const DeepCollectionEquality().equals(other.ips, _ips)&&(identical(other.error, error) || other.error == error));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+    return Object.hash(runtimeType,domain,const DeepCollectionEquality().hash(_ips),error);
+}
+
+@override
+String toString() {
+    return 'CfResolveItem(domain: $domain, ips: $ips, error: $error)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$CfResolveItemCopyWith<$Res> implements $CfResolveItemCopyWith<$Res> {
+  factory _$CfResolveItemCopyWith(_CfResolveItem value, $Res Function(_CfResolveItem) _then) = __$CfResolveItemCopyWithImpl;
+@override @useResult
+$Res call({
+ String domain, List<String> ips, String? error
+});
+
+
+
+
+}
+/// @nodoc
+class __$CfResolveItemCopyWithImpl<$Res>
+    implements _$CfResolveItemCopyWith<$Res> {
+  __$CfResolveItemCopyWithImpl(this._self, this._then);
+
+  final _CfResolveItem _self;
+  final $Res Function(_CfResolveItem) _then;
+
+/// Create a copy of CfResolveItem
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? domain = null,Object? ips = null,Object? error = freezed,}) {
+  return _then(_CfResolveItem(
+domain: null == domain ? _self.domain : domain // ignore: cast_nullable_to_non_nullable
+as String,ips: null == ips ? _self._ips : ips // ignore: cast_nullable_to_non_nullable
+as List<String>,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$CfResolveResult {
+
+ List<CfResolveItem> get results;
+/// Create a copy of CfResolveResult
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CfResolveResultCopyWith<CfResolveResult> get copyWith => _$CfResolveResultCopyWithImpl<CfResolveResult>(this as CfResolveResult, _$identity);
+
+  /// Serializes this CfResolveResult to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as CfResolveResult;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CfResolveResult&&const DeepCollectionEquality().equals(other.results, _this.results));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+  final _this = this as CfResolveResult;
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.results));
+}
+
+@override
+String toString() {
+  final _this = this as CfResolveResult;
+  return 'CfResolveResult(results: ${_this.results})';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CfResolveResultCopyWith<$Res>  {
+  factory $CfResolveResultCopyWith(CfResolveResult value, $Res Function(CfResolveResult) _then) = _$CfResolveResultCopyWithImpl;
+@useResult
+$Res call({
+ List<CfResolveItem> results
+});
+
+
+
+
+}
+/// @nodoc
+class _$CfResolveResultCopyWithImpl<$Res>
+    implements $CfResolveResultCopyWith<$Res> {
+  _$CfResolveResultCopyWithImpl(this._self, this._then);
+
+  final CfResolveResult _self;
+  final $Res Function(CfResolveResult) _then;
+
+/// Create a copy of CfResolveResult
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? results = null,}) {
+  return _then(CfResolveResult(
+results: null == results ? _self.results : results // ignore: cast_nullable_to_non_nullable
+as List<CfResolveItem>,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [CfResolveResult].
+extension CfResolveResultPatterns on CfResolveResult {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _CfResolveResult value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _CfResolveResult() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _CfResolveResult value)  $default,){
+final _that = this;
+switch (_that) {
+case _CfResolveResult():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _CfResolveResult value)?  $default,){
+final _that = this;
+switch (_that) {
+case _CfResolveResult() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<CfResolveItem> results)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _CfResolveResult() when $default != null:
+return $default(_that.results);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<CfResolveItem> results)  $default,) {final _that = this;
+switch (_that) {
+case _CfResolveResult():
+return $default(_that.results);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<CfResolveItem> results)?  $default,) {final _that = this;
+switch (_that) {
+case _CfResolveResult() when $default != null:
+return $default(_that.results);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _CfResolveResult implements CfResolveResult {
+  const _CfResolveResult({ List<CfResolveItem> results = const []}): _results = results;
+  factory _CfResolveResult.fromJson(Map<String, dynamic> json) => _$CfResolveResultFromJson(json);
+
+ final  List<CfResolveItem> _results;
+@override@JsonKey() List<CfResolveItem> get results {
+  if (_results is EqualUnmodifiableListView) return _results;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_results);
+}
+
+
+/// Create a copy of CfResolveResult
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$CfResolveResultCopyWith<_CfResolveResult> get copyWith => __$CfResolveResultCopyWithImpl<_CfResolveResult>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$CfResolveResultToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CfResolveResult&&const DeepCollectionEquality().equals(other.results, _results));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_results));
+}
+
+@override
+String toString() {
+    return 'CfResolveResult(results: $results)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$CfResolveResultCopyWith<$Res> implements $CfResolveResultCopyWith<$Res> {
+  factory _$CfResolveResultCopyWith(_CfResolveResult value, $Res Function(_CfResolveResult) _then) = __$CfResolveResultCopyWithImpl;
+@override @useResult
+$Res call({
+ List<CfResolveItem> results
+});
+
+
+
+
+}
+/// @nodoc
+class __$CfResolveResultCopyWithImpl<$Res>
+    implements _$CfResolveResultCopyWith<$Res> {
+  __$CfResolveResultCopyWithImpl(this._self, this._then);
+
+  final _CfResolveResult _self;
+  final $Res Function(_CfResolveResult) _then;
+
+/// Create a copy of CfResolveResult
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? results = null,}) {
+  return _then(_CfResolveResult(
+results: null == results ? _self._results : results // ignore: cast_nullable_to_non_nullable
+as List<CfResolveItem>,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
 mixin _$ServiceCheckParams {
 
 @JsonKey(name: 'proxy-name') String get proxyName; List<String> get names; int get timeout;

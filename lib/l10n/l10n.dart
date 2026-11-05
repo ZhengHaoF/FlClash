@@ -7663,8 +7663,7 @@ class AppLocalizations {
   String customImportDroppedSubRules(num count, Object label) {
     return Intl.plural(
       count,
-      one:
-          '1 SUB-RULE rule was dropped, since custom profiles do not support sub-rules',
+      one: '1 SUB-RULE rule was dropped, since custom profiles do not support sub-rules',
       other:
           '$label SUB-RULE rules were dropped, since custom profiles do not support sub-rules',
       name: 'customImportDroppedSubRules',
@@ -9498,14 +9497,34 @@ class AppLocalizations {
     );
   }
 
-  /// `Detect`
-  String get cfDetect {
-    return Intl.message('Detect', name: 'cfDetect', desc: '', args: []);
+  /// `Test and apply`
+  String get cfTestAndApply {
+    return Intl.message(
+      'Test and apply',
+      name: 'cfTestAndApply',
+      desc: '',
+      args: [],
+    );
   }
 
-  /// `Detecting…`
+  /// `Applied to {count} domains`
+  String cfAppliedCount(Object count) {
+    return Intl.message(
+      'Applied to $count domains',
+      name: 'cfAppliedCount',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Detecting and testing…`
   String get cfDetecting {
-    return Intl.message('Detecting…', name: 'cfDetecting', desc: '', args: []);
+    return Intl.message(
+      'Detecting and testing…',
+      name: 'cfDetecting',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Cloudflare range`
@@ -9593,13 +9612,13 @@ class AppLocalizations {
     );
   }
 
-  /// `Run a scan first`
-  String get cfScanFirst {
+  /// `No reachable address was measured for these domains, so they were skipped: {domains}`
+  String cfSkippedDomainsTip(Object domains) {
     return Intl.message(
-      'Run a scan first',
-      name: 'cfScanFirst',
+      'No reachable address was measured for these domains, so they were skipped: $domains',
+      name: 'cfSkippedDomainsTip',
       desc: '',
-      args: [],
+      args: [domains],
     );
   }
 
@@ -9630,26 +9649,6 @@ class AppLocalizations {
       name: 'cfMatchedFilter',
       desc: '',
       args: [count],
-    );
-  }
-
-  /// `These domains resolve outside Cloudflare's ranges, so a pinned entrance may not serve them: {domains}. Apply anyway?`
-  String cfOutsideRangesTip(Object domains) {
-    return Intl.message(
-      'These domains resolve outside Cloudflare\'s ranges, so a pinned entrance may not serve them: $domains. Apply anyway?',
-      name: 'cfOutsideRangesTip',
-      desc: '',
-      args: [domains],
-    );
-  }
-
-  /// `These domains have not been detected yet, so nothing confirms they answer to a Cloudflare edge: {domains}. Apply anyway?`
-  String cfUndetectedTip(Object domains) {
-    return Intl.message(
-      'These domains have not been detected yet, so nothing confirms they answer to a Cloudflare edge: $domains. Apply anyway?',
-      name: 'cfUndetectedTip',
-      desc: '',
-      args: [domains],
     );
   }
 

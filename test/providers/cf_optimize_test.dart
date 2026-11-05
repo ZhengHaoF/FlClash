@@ -84,6 +84,78 @@ proxies:
     });
   });
 
+  group('cfTestIpsGuardDuration', () {
+    test('mirrors the core defaults', () {
+      final guard = cfTestIpsGuardDuration(
+        const CfTestIpsParams(
+          targets: [
+            CfTestIpsTarget(domain: 'a.example', ips: ['1.1.1.1', '1.1.1.2']),
+          ],
+          port: '443',
+        ),
+      );
+      // 2 addresses at the core default concurrency of 100 round to 1 round
+      // x 1500 ms x 2 attempts + 5 s.
+      expect(guard, const Duration(seconds: 8));
+    });
+
+    test('caps the counted addresses the way the core does', () {
+      final guard = cfTestIpsGuardDuration(
+        CfTestIpsParams(
+          targets: [
+            CfTestIpsTarget(
+              domain: 'a.example',
+              ips: List.filled(64, '1.1.1.1'),
+            ),
+          ],
+          port: '443',
+        ),
+      );
+      // The core caps a domain at sixteen addresses; sixteen at concurrency
+      // 100 still round to 1.
+      expect(guard, const Duration(seconds: 8));
+    });
+
+    test('clamps extreme parameters under the core ceiling', () {
+      final guard = cfTestIpsGuardDuration(
+        CfTestIpsParams(
+          targets: [
+            for (var i = 0; i < 64; i++)
+              CfTestIpsTarget(
+                domain: 'd$i.example',
+                ips: List.filled(16, '1.1.1.1'),
+              ),
+          ],
+          port: '443',
+          concurrency: 1,
+          testCount: 10,
+          timeout: 10000,
+        ),
+      );
+      // The core caps its own deadline at two minutes; the guard must not
+      // fire before that has had its chance.
+      expect(guard, const Duration(milliseconds: 125000));
+    });
+  });
+
+  group('cfResolveGuardDuration', () {
+    test('mirrors the core defaults', () {
+      final guard = cfResolveGuardDuration(
+        const CfResolveParams(domains: ['a.example']),
+      );
+      // One sweep of eight at the core default 3000 ms per query + 5 s.
+      expect(guard, const Duration(seconds: 8));
+    });
+
+    test('caps the swept domains the way the core does', () {
+      final guard = cfResolveGuardDuration(
+        CfResolveParams(domains: List.filled(100, 'a.example')),
+      );
+      // Sixty-four domains round to 8 sweeps x 3000 ms + 5 s.
+      expect(guard, const Duration(seconds: 29));
+    });
+  });
+
   group('CfOptimizeState', () {
     test('detect results replace wholesale on copyWith', () {
       const state = CfOptimizeState(
@@ -152,68 +224,81 @@ proxies:
   });
 
   group('buildCfHostEntries', () {
-    const items = [
+    const scanItems = [
       CfScanItem(ip: '104.16.0.2', sent: 2, recv: 2, lossRate: 0, delayMs: 8),
       CfScanItem(ip: '104.16.0.9', sent: 2, recv: 2, lossRate: 0, delayMs: 60),
     ];
-
-    test('pins the head of the list for every selected domain', () {
-      expect(buildCfHostEntries(['a.example', 'b.example'], items), {
-        'a.example': '104.16.0.2',
-        'b.example': '104.16.0.2',
-      });
-    });
-
-    test('writes nothing without results or domains', () {
-      expect(buildCfHostEntries(['a.example'], const []), isEmpty);
-      expect(buildCfHostEntries(const [], items), isEmpty);
-    });
-  });
-
-  group('cfDomainsOutsideRanges', () {
     const detectResults = {
       'in.example': CfDetectItem(domain: 'in.example', inRanges: true),
       'out.example': CfDetectItem(domain: 'out.example'),
-      'failed.example': CfDetectItem(domain: 'failed.example', error: 'boom'),
     };
 
-    test('flags only what detect placed outside the ranges', () {
+    test('pins the fastest tested answer per domain', () {
       expect(
-        cfDomainsOutsideRanges([
-          'in.example',
-          'out.example',
-          'failed.example',
-          'unknown.example',
-        ], detectResults),
-        ['out.example'],
-      );
-    });
-  });
-
-  group('cfDomainsNotDetected', () {
-    const detectResults = {
-      'resolved.example': CfDetectItem(
-        domain: 'resolved.example',
-        inRanges: true,
-      ),
-      'failed.example': CfDetectItem(domain: 'failed.example', error: 'boom'),
-    };
-
-    test('names what no lookup has answered for', () {
-      expect(
-        cfDomainsNotDetected([
-          'resolved.example',
-          'failed.example',
-          'fresh.example',
-        ], detectResults),
-        ['failed.example', 'fresh.example'],
+        buildCfHostEntries(
+          ['a.example', 'b.example'],
+          scanResults: const [],
+          testResults: const {
+            'a.example': [
+              CfScanItem(ip: '1.1.1.1', lossRate: 0, delayMs: 30),
+              CfScanItem(ip: '1.1.1.2', lossRate: 0, delayMs: 10),
+            ],
+            'b.example': [CfScanItem(ip: '2.2.2.2', lossRate: 0.5, delayMs: 1)],
+          },
+          detectResults: const {},
+        ),
+        {'a.example': '1.1.1.2', 'b.example': '2.2.2.2'},
       );
     });
 
-    test('every domain is undetected before the first run', () {
-      expect(cfDomainsNotDetected(const ['fresh.example'], const {}), [
-        'fresh.example',
-      ]);
+    test('a domain inside the ranges also draws on the scan answers', () {
+      expect(
+        buildCfHostEntries(
+          ['in.example'],
+          scanResults: scanItems,
+          testResults: const {
+            'in.example': [
+              CfScanItem(ip: '9.9.9.9', lossRate: 0, delayMs: 100),
+            ],
+          },
+          detectResults: detectResults,
+        ),
+        // The scan's 8 ms beats the tested 100 ms.
+        {'in.example': '104.16.0.2'},
+      );
+    });
+
+    test('a domain outside the ranges never gets a scan answer', () {
+      expect(
+        buildCfHostEntries(
+          ['out.example'],
+          scanResults: scanItems,
+          testResults: const {},
+          detectResults: detectResults,
+        ),
+        isEmpty,
+      );
+    });
+
+    test('writes nothing without results or domains', () {
+      expect(
+        buildCfHostEntries(
+          ['a.example'],
+          scanResults: const [],
+          testResults: const {},
+          detectResults: const {},
+        ),
+        isEmpty,
+      );
+      expect(
+        buildCfHostEntries(
+          const [],
+          scanResults: scanItems,
+          testResults: const {},
+          detectResults: const {},
+        ),
+        isEmpty,
+      );
     });
   });
 

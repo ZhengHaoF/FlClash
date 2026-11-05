@@ -62,6 +62,8 @@ enum CoreMethod {
   mitmBody('mitm.body'),
   cfScan('cf.scan'),
   cfDetect('cf.detect'),
+  cfTestIps('cf.testIps'),
+  cfResolve('cf.resolve'),
 
   /// The envelope of the Core's event batches, never called.
   message('message');

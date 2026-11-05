@@ -28,12 +28,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(count, skipped) => "将添加 ${count} 项，跳过 ${skipped} 项已存在";
 
-  static String m4(count) => "将移除 ${count} 条映射；其它域名的 Hosts 条目保持不动。";
+  static String m4(count) => "已应用 ${count} 个域名";
 
-  static String m5(count) => "通过 ${count} 个";
+  static String m5(count) => "将移除 ${count} 条映射；其它域名的 Hosts 条目保持不动。";
 
-  static String m6(domains) =>
-      "以下域名解析到 Cloudflare 网段之外，固定成入口 IP 后它们可能无法连接：${domains}。仍要应用吗？";
+  static String m6(count) => "通过 ${count} 个";
 
   static String m7(count) => "${count} 个网段";
 
@@ -41,8 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m9(sampled) => "已采样 ${sampled} 个";
 
-  static String m10(domains) =>
-      "以下域名还没有检测过，无法确认它们由 Cloudflare 网段提供服务：${domains}。仍要应用吗？";
+  static String m10(domains) => "以下域名没有测得可用地址，本次已跳过：${domains}";
 
   static String m11(detail) => "清除数据失败：${detail}";
 
@@ -407,15 +405,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "cannotSave": MessageLookupByLibrary.simpleMessage("无法保存"),
     "certificate": MessageLookupByLibrary.simpleMessage("证书"),
     "cfAddDomain": MessageLookupByLibrary.simpleMessage("添加域名"),
+    "cfAppliedCount": m4,
     "cfAppliedHint": MessageLookupByLibrary.simpleMessage(
       "以上候选域名的映射。应用后约两秒会自动重新下发配置，进行中的连接会被打断；其它域名的 Hosts 条目仍在常规设置里管理。",
     ),
     "cfAppliedHosts": MessageLookupByLibrary.simpleMessage("生效中的 Hosts 映射"),
     "cfClearAll": MessageLookupByLibrary.simpleMessage("清空全部"),
-    "cfClearAllTip": m4,
-    "cfDetect": MessageLookupByLibrary.simpleMessage("检测"),
+    "cfClearAllTip": m5,
     "cfDetectFailed": MessageLookupByLibrary.simpleMessage("检测失败"),
-    "cfDetecting": MessageLookupByLibrary.simpleMessage("检测中…"),
+    "cfDetecting": MessageLookupByLibrary.simpleMessage("检测并测速中…"),
     "cfDomains": MessageLookupByLibrary.simpleMessage("候选域名"),
     "cfFilter": MessageLookupByLibrary.simpleMessage("筛选"),
     "cfFilterDesc": MessageLookupByLibrary.simpleMessage(
@@ -423,7 +421,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cfHowItWorks": MessageLookupByLibrary.simpleMessage("工作原理"),
     "cfInRanges": MessageLookupByLibrary.simpleMessage("Cloudflare 网段"),
-    "cfMatchedFilter": m5,
+    "cfMatchedFilter": m6,
     "cfMaxDelay": MessageLookupByLibrary.simpleMessage("延迟上限 (ms)"),
     "cfMaxLoss": MessageLookupByLibrary.simpleMessage("丢包率上限 (%)"),
     "cfMinDelay": MessageLookupByLibrary.simpleMessage("延迟下限 (ms)"),
@@ -433,7 +431,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfOptimizeDesc": MessageLookupByLibrary.simpleMessage(
       "扫描 Cloudflare 官方网段，找出对你线路最快的入口，并通过应用的 Hosts 覆写固定所选域名的入口 IP。只改变入口 IP，TLS SNI 与 Host 头保持域名不变。测速结果会随网络时效变化，请定期重扫。",
     ),
-    "cfOutsideRangesTip": m6,
     "cfRanges": MessageLookupByLibrary.simpleMessage("Cloudflare 网段"),
     "cfRangesBuiltIn": MessageLookupByLibrary.simpleMessage(
       "内置网段，尚未从 Cloudflare 更新",
@@ -443,14 +440,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfRangesUpdatedAt": m8,
     "cfRangesUpdating": MessageLookupByLibrary.simpleMessage("更新中…"),
     "cfSampleCount": MessageLookupByLibrary.simpleMessage("采样数量 (1-4096)"),
-    "cfScanFirst": MessageLookupByLibrary.simpleMessage("请先扫描"),
     "cfScanResult": MessageLookupByLibrary.simpleMessage("扫描结果"),
     "cfScanSampled": m9,
     "cfScanSettings": MessageLookupByLibrary.simpleMessage("扫描"),
     "cfScanning": MessageLookupByLibrary.simpleMessage("扫描中…"),
     "cfSelectDomainFirst": MessageLookupByLibrary.simpleMessage("请先选择至少一个域名"),
+    "cfSkippedDomainsTip": m10,
     "cfStartScan": MessageLookupByLibrary.simpleMessage("开始扫描"),
-    "cfUndetectedTip": m10,
+    "cfTestAndApply": MessageLookupByLibrary.simpleMessage("测速并应用"),
     "changeProxyFailedTip": MessageLookupByLibrary.simpleMessage(
       "切换代理失败，已恢复上一次的选择",
     ),

@@ -238,6 +238,8 @@ var methodHandlers = map[CoreMethod]methodHandler{
 	probeServicesMethod:   withArguments(handleServiceCheck),
 	cfScanMethod:          withFallible(handleCfScan),
 	cfDetectMethod:        withFallible(handleCfDetect),
+	cfTestIpsMethod:       withFallible(handleCfTestIps),
+	cfResolveMethod:       withFallible(handleCfResolve),
 }
 
 func watchRouteHandler(call *MethodCall) (any, error) {

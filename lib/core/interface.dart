@@ -7,31 +7,58 @@ import 'package:fl_clash/models/models.dart';
 import 'desktop/model.dart';
 import 'method.dart';
 
+/// Clamps a parameter the way core/cf_scan.go does: non-positive falls back to
+/// the default, anything outside the range snaps to the edge.
+int _cfBound(int value, int fallback, int min, int max) {
+  if (value <= 0) {
+    return fallback;
+  }
+  if (value < min) {
+    return min;
+  }
+  if (value > max) {
+    return max;
+  }
+  return value;
+}
+
 /// Mirrors the deadline cf_scan.go computes — rounds x per-dial x attempts plus
 /// slack, under the core's own two-minute ceiling — so the transport guard never
 /// fires before the core has had its chance to answer. Kept in step with the
 /// clamps in core/cf_scan.go.
 Duration cfScanGuardDuration(CfScanParams params) {
-  int bound(int value, int fallback, int min, int max) {
-    if (value <= 0) {
-      return fallback;
-    }
-    if (value < min) {
-      return min;
-    }
-    if (value > max) {
-      return max;
-    }
-    return value;
-  }
-
-  final sampleCount = bound(params.sampleCount, 500, 1, 4096);
-  final concurrency = bound(params.concurrency, 100, 1, 500);
-  final attempts = bound(params.testCount, 2, 1, 10);
-  final perDial = bound(params.timeout, 1500, 100, 10000);
+  final sampleCount = _cfBound(params.sampleCount, 500, 1, 4096);
+  final concurrency = _cfBound(params.concurrency, 100, 1, 500);
+  final attempts = _cfBound(params.testCount, 2, 1, 10);
+  final perDial = _cfBound(params.timeout, 1500, 100, 10000);
   final rounds = (sampleCount + concurrency - 1) ~/ concurrency;
   final totalMs = rounds * perDial * attempts + 5000;
   return Duration(milliseconds: totalMs > 125000 ? 125000 : totalMs);
+}
+
+/// Mirrors the deadline cf_scan.go computes for a tested-address run, over the
+/// addresses the detect run resolved — at most sixteen per domain and
+/// sixty-four domains — under the core's own two-minute ceiling.
+Duration cfTestIpsGuardDuration(CfTestIpsParams params) {
+  var count = 0;
+  for (final target in params.targets.take(64)) {
+    count += target.ips.length > 16 ? 16 : target.ips.length;
+  }
+  final concurrency = _cfBound(params.concurrency, 100, 1, 500);
+  final attempts = _cfBound(params.testCount, 2, 1, 10);
+  final perDial = _cfBound(params.timeout, 1500, 100, 10000);
+  final rounds = count == 0 ? 1 : (count + concurrency - 1) ~/ concurrency;
+  final totalMs = rounds * perDial * attempts + 5000;
+  return Duration(milliseconds: totalMs > 125000 ? 125000 : totalMs);
+}
+
+/// Mirrors the deadline cf_resolve.go costs: eight domains at a time, each
+/// lookup capped at the per-query timeout, plus the transport slack.
+Duration cfResolveGuardDuration(CfResolveParams params) {
+  final domains = params.domains.length > 64 ? 64 : params.domains.length;
+  final rounds = domains == 0 ? 1 : (domains + 7) ~/ 8;
+  final perQuery = _cfBound(params.timeout, 3000, 500, 15000);
+  return Duration(milliseconds: rounds * perQuery + 5000);
 }
 
 int cfDetectBudgetFactor(CfDetectParams params) {
@@ -427,6 +454,24 @@ abstract class CoreHandlerInterface {
         params.timeout,
         budgetFactor: cfDetectBudgetFactor(params),
       ),
+    );
+  }
+
+  Future<CfTestIpsResult?> cfTestIps(CfTestIpsParams params) {
+    return _find(
+      CoreMethod.cfTestIps,
+      _model(CfTestIpsResult.fromJson),
+      arguments: params.toJson(),
+      timeout: cfTestIpsGuardDuration(params),
+    );
+  }
+
+  Future<CfResolveResult?> cfResolve(CfResolveParams params) {
+    return _find(
+      CoreMethod.cfResolve,
+      _model(CfResolveResult.fromJson),
+      arguments: params.toJson(),
+      timeout: cfResolveGuardDuration(params),
     );
   }
 

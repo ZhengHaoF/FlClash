@@ -659,6 +659,118 @@ _CfDetectResult _$CfDetectResultFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$CfDetectResultToJson(_CfDetectResult instance) =>
     <String, dynamic>{'results': instance.results};
 
+_CfTestIpsTarget _$CfTestIpsTargetFromJson(Map<String, dynamic> json) =>
+    _CfTestIpsTarget(
+      domain: json['domain'] as String,
+      ips:
+          (json['ips'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+          const [],
+    );
+
+Map<String, dynamic> _$CfTestIpsTargetToJson(_CfTestIpsTarget instance) =>
+    <String, dynamic>{'domain': instance.domain, 'ips': instance.ips};
+
+_CfTestIpsParams _$CfTestIpsParamsFromJson(Map<String, dynamic> json) =>
+    _CfTestIpsParams(
+      targets:
+          (json['targets'] as List<dynamic>?)
+              ?.map((e) => CfTestIpsTarget.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      port: json['port'] as String,
+      concurrency: (json['concurrency'] as num?)?.toInt() ?? 0,
+      testCount: (json['test-count'] as num?)?.toInt() ?? 0,
+      timeout: (json['timeout'] as num?)?.toInt() ?? 0,
+    );
+
+Map<String, dynamic> _$CfTestIpsParamsToJson(_CfTestIpsParams instance) =>
+    <String, dynamic>{
+      'targets': instance.targets,
+      'port': instance.port,
+      'concurrency': instance.concurrency,
+      'test-count': instance.testCount,
+      'timeout': instance.timeout,
+    };
+
+_CfTestIpsItem _$CfTestIpsItemFromJson(Map<String, dynamic> json) =>
+    _CfTestIpsItem(
+      domain: json['domain'] as String,
+      results:
+          (json['results'] as List<dynamic>?)
+              ?.map((e) => CfScanItem.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+    );
+
+Map<String, dynamic> _$CfTestIpsItemToJson(_CfTestIpsItem instance) =>
+    <String, dynamic>{'domain': instance.domain, 'results': instance.results};
+
+_CfTestIpsResult _$CfTestIpsResultFromJson(Map<String, dynamic> json) =>
+    _CfTestIpsResult(
+      results:
+          (json['results'] as List<dynamic>?)
+              ?.map((e) => CfTestIpsItem.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      elapsedMs: (json['elapsed-ms'] as num?)?.toInt() ?? 0,
+    );
+
+Map<String, dynamic> _$CfTestIpsResultToJson(_CfTestIpsResult instance) =>
+    <String, dynamic>{
+      'results': instance.results,
+      'elapsed-ms': instance.elapsedMs,
+    };
+
+_CfResolveParams _$CfResolveParamsFromJson(Map<String, dynamic> json) =>
+    _CfResolveParams(
+      domains:
+          (json['domains'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      nameservers:
+          (json['nameservers'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      timeout: (json['timeout'] as num?)?.toInt() ?? 0,
+    );
+
+Map<String, dynamic> _$CfResolveParamsToJson(_CfResolveParams instance) =>
+    <String, dynamic>{
+      'domains': instance.domains,
+      'nameservers': instance.nameservers,
+      'timeout': instance.timeout,
+    };
+
+_CfResolveItem _$CfResolveItemFromJson(Map<String, dynamic> json) =>
+    _CfResolveItem(
+      domain: json['domain'] as String,
+      ips:
+          (json['ips'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+          const [],
+      error: json['error'] as String?,
+    );
+
+Map<String, dynamic> _$CfResolveItemToJson(_CfResolveItem instance) =>
+    <String, dynamic>{
+      'domain': instance.domain,
+      'ips': instance.ips,
+      'error': instance.error,
+    };
+
+_CfResolveResult _$CfResolveResultFromJson(Map<String, dynamic> json) =>
+    _CfResolveResult(
+      results:
+          (json['results'] as List<dynamic>?)
+              ?.map((e) => CfResolveItem.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+    );
+
+Map<String, dynamic> _$CfResolveResultToJson(_CfResolveResult instance) =>
+    <String, dynamic>{'results': instance.results};
+
 _ServiceCheckParams _$ServiceCheckParamsFromJson(Map<String, dynamic> json) =>
     _ServiceCheckParams(
       proxyName: json['proxy-name'] as String? ?? '',

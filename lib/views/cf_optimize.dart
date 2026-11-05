@@ -36,6 +36,10 @@ class _CfOptimizeViewState extends ConsumerState<CfOptimizeView> {
   // below it is the page's biggest subtree.
   final _filterRevision = ValueNotifier<int>(0);
 
+  // The results fold by default; the summary row keeps the best answer
+  // visible without the list.
+  var _resultsExpanded = false;
+
   @override
   void initState() {
     super.initState();
@@ -132,10 +136,30 @@ class _CfOptimizeViewState extends ConsumerState<CfOptimizeView> {
     ref.read(cfOptimizeProvider.notifier).updateRanges();
   }
 
-  void _detect() {
-    ref
+  Future<void> _testAndApply() async {
+    final port = _intValue(_portController.text);
+    setState(() {
+      _portInvalid = port == null || port < 1 || port > 65535;
+    });
+    if (_portInvalid) {
+      return;
+    }
+    await ref
         .read(cfOptimizeProvider.notifier)
-        .detect(_candidateDomains(), _ranges());
+        .detect(
+          _candidateDomains(),
+          _ranges(),
+          port: _portController.text.trim(),
+        );
+    if (!mounted) {
+      return;
+    }
+    // A failed run leaves its error in the row's subtitle; applying on top of
+    // it would answer with stale or half-answered data.
+    if (ref.read(cfOptimizeProvider).error != null) {
+      return;
+    }
+    await _applyTop();
   }
 
   void _toggleDomain(String domain) {
@@ -164,12 +188,12 @@ class _CfOptimizeViewState extends ConsumerState<CfOptimizeView> {
     final appLocalizations = context.appLocalizations;
     final optimize = ref.read(cfOptimizeProvider);
     final result = optimize.scanResult;
-    if (result == null || result.results.isEmpty) {
-      await dialogs.showAlert(
-        message: TextSpan(text: appLocalizations.cfScanFirst),
-      );
-      return;
-    }
+    // The tested answers cover the domains the scan cannot: ones outside
+    // Cloudflare's ranges. Either source alone is enough to apply.
+    final testedResults = {
+      for (final entry in optimize.testResults.entries)
+        entry.key: _filteredItems(entry.value),
+    };
     // A domain that left the profile keeps its selection, and a hosts entry for
     // it would be one this page can no longer list or clear.
     final selected = _candidateDomains()
@@ -181,36 +205,38 @@ class _CfOptimizeViewState extends ConsumerState<CfOptimizeView> {
       );
       return;
     }
-    final items = _filteredItems(result.results);
-    if (items.isEmpty) {
+    final items = result == null
+        ? const <CfScanItem>[]
+        : _filteredItems(result.results);
+    final entries = buildCfHostEntries(
+      selected,
+      scanResults: items,
+      testResults: testedResults,
+      detectResults: optimize.detectResults,
+    );
+    if (entries.isNotEmpty) {
+      ref
+          .read(patchClashConfigProvider.notifier)
+          .update(
+            (config) => config.copyWith(hosts: {...config.hosts, ...entries}),
+          );
+      dialogs.showBanner(
+        appLocalizations.cfAppliedCount(entries.length),
+        level: BannerLevel.success,
+      );
+    }
+    // What no resolver answered for and no probe reached: report it rather
+    // than skip in silence, the run just did its best on the rest.
+    final skipped =
+        selected.where((domain) => !entries.containsKey(domain)).toList()
+          ..sort();
+    if (skipped.isNotEmpty) {
       await dialogs.showAlert(
-        message: TextSpan(text: appLocalizations.cfNoResult),
+        message: TextSpan(
+          text: appLocalizations.cfSkippedDomainsTip(skipped.join(', ')),
+        ),
       );
-      return;
     }
-    final outside = cfDomainsOutsideRanges(selected, optimize.detectResults);
-    final undetected = outside.isEmpty
-        ? cfDomainsNotDetected(selected, optimize.detectResults)
-        : const <String>[];
-    if (outside.isNotEmpty || undetected.isNotEmpty) {
-      final warning = outside.isNotEmpty
-          ? appLocalizations.cfOutsideRangesTip(outside.join(', '))
-          : appLocalizations.cfUndetectedTip(undetected.join(', '));
-      final confirmed = await dialogs.showMessage(
-        message: TextSpan(text: warning),
-        destructive: true,
-        confirmText: appLocalizations.applyNow,
-      );
-      if (confirmed != true || !mounted) {
-        return;
-      }
-    }
-    final entries = buildCfHostEntries(selected, items);
-    ref
-        .read(patchClashConfigProvider.notifier)
-        .update(
-          (config) => config.copyWith(hosts: {...config.hosts, ...entries}),
-        );
   }
 
   void _removeHost(String domain) {
@@ -379,36 +405,69 @@ class _CfOptimizeViewState extends ConsumerState<CfOptimizeView> {
           listenable: _filterRevision,
           builder: (context, _) {
             final filtered = _filteredItems(scanResult.results);
-            return generateSection(
-              title: appLocalizations.cfScanResult,
-              items: [
-                for (final item in filtered.take(10))
+            final best = filtered.isEmpty ? null : filtered.first;
+            return AnimatedSize(
+              duration: commonDuration,
+              child: generateSection(
+                title: appLocalizations.cfScanResult,
+                items: [
                   ListItem(
-                    leading: const GlyphIcon(AppGlyphs.bolt),
-                    title: Text(item.ip),
-                    subtitle: Text(
-                      '${item.delayMs} ms · '
-                      '${(item.lossRate * 100).toStringAsFixed(1)}%',
+                    leading: AnimatedRotation(
+                      duration: const Duration(milliseconds: 200),
+                      turns: _resultsExpanded ? 0 : -0.25,
+                      child: const GlyphIcon(AppGlyphs.chevronDown),
                     ),
+                    title: Text(
+                      best == null
+                          ? appLocalizations.cfNoResult
+                          : '${best.delayMs} ms · ${best.ip}',
+                    ),
+                    subtitle: Text(
+                      '${appLocalizations.cfScanSampled(scanResult.sampled)} · '
+                      '${appLocalizations.cfMatchedFilter(filtered.length)} · '
+                      '${(scanResult.elapsedMs / 1000).toStringAsFixed(0)} s',
+                    ),
+                    onTap: () =>
+                        setState(() => _resultsExpanded = !_resultsExpanded),
                   ),
-                if (filtered.isEmpty)
-                  ListItem(title: Text(appLocalizations.cfNoResult)),
-                ListItem(
-                  title: Text(appLocalizations.applyNow),
-                  onTap: state.scanning ? null : _applyTop,
-                  trailing: const GlyphIcon(AppGlyphs.chevronForward),
-                ),
-              ],
-              footer:
-                  '${appLocalizations.cfScanSampled(scanResult.sampled)} · '
-                  '${appLocalizations.cfMatchedFilter(filtered.length)} · '
-                  '${(scanResult.elapsedMs / 1000).toStringAsFixed(0)} s',
+                  if (_resultsExpanded)
+                    for (final item in filtered.take(10))
+                      ListItem(
+                        leading: const GlyphIcon(AppGlyphs.bolt),
+                        title: Text(item.ip),
+                        subtitle: Text(
+                          '${item.delayMs} ms · '
+                          '${(item.lossRate * 100).toStringAsFixed(1)}%',
+                        ),
+                      ),
+                ],
+              ),
             );
           },
         ),
       generateSection(
         title: appLocalizations.cfDomains,
         items: [
+          ListItem(
+            title: Text(
+              state.detecting
+                  ? appLocalizations.cfDetecting
+                  : appLocalizations.cfTestAndApply,
+            ),
+            subtitle: state.error == null
+                ? null
+                : Text(
+                    state.error!,
+                    style: TextStyle(color: context.colorScheme.error),
+                  ),
+            trailing: ElasticButton(
+              child: FilledButton(
+                onPressed: state.detecting ? null : _testAndApply,
+                child: Text(appLocalizations.cfTestAndApply),
+              ),
+            ),
+            onTap: state.detecting ? null : _testAndApply,
+          ),
           FormRow(
             title: appLocalizations.cfAddDomain,
             trailing: Row(
@@ -444,6 +503,13 @@ class _CfOptimizeViewState extends ConsumerState<CfOptimizeView> {
                 final label = item.inRanges
                     ? appLocalizations.cfInRanges
                     : appLocalizations.cfNotInRanges;
+                // The tested answers were measured over the same path a
+                // node's dial takes; the fastest one is what an apply pins.
+                final tested = state.testResults[domain];
+                if (tested != null && tested.isNotEmpty) {
+                  final best = tested.first;
+                  return Text('$label · ${best.delayMs} ms · ${best.ip}');
+                }
                 // The resolved addresses come from the same lookup a node's
                 // dial makes, so the row shows what that dial would reach.
                 final ips = item.ips.take(2).join(', ');
@@ -452,14 +518,6 @@ class _CfOptimizeViewState extends ConsumerState<CfOptimizeView> {
               onTap: () => _toggleDomain(domain),
             ),
         ],
-        actions: [
-          IconButtonData(
-            glyph: AppGlyphs.dns,
-            tooltip: appLocalizations.cfDetect,
-            onPressed: state.detecting ? null : _detect,
-          ),
-        ],
-        footer: state.detecting ? appLocalizations.cfDetecting : null,
       ),
       generateSection(
         title: appLocalizations.cfAppliedHosts,

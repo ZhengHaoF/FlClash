@@ -28,12 +28,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(count, skipped) => "추가 ${count}개, 이미 있어서 건너뜀 ${skipped}개";
 
-  static String m4(count) => "매핑 ${count}개를 제거합니다. 다른 hosts 항목은 그대로 둡니다.";
+  static String m4(count) => "${count}개 도메인을 적용했습니다";
 
-  static String m5(count) => "${count}개 통과";
+  static String m5(count) => "매핑 ${count}개를 제거합니다. 다른 hosts 항목은 그대로 둡니다.";
 
-  static String m6(domains) =>
-      "다음 도메인은 Cloudflare 대역 밖으로 해석되어 고정한 입구 IP가 응답하지 않을 수 있습니다: ${domains}. 그래도 적용할까요?";
+  static String m6(count) => "${count}개 통과";
 
   static String m7(count) => "대역 ${count}개";
 
@@ -42,7 +41,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m9(sampled) => "${sampled}개 샘플링";
 
   static String m10(domains) =>
-      "다음 도메인은 아직 검색하지 않아 Cloudflare 대역인지 확인할 수 없습니다: ${domains}. 그래도 적용할까요?";
+      "다음 도메인은 도달 가능한 주소가 측정되지 않아 건너뛰었습니다: ${domains}";
 
   static String m11(detail) => "데이터를 지우지 못했습니다: ${detail}";
 
@@ -425,15 +424,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "cannotSave": MessageLookupByLibrary.simpleMessage("저장할 수 없음"),
     "certificate": MessageLookupByLibrary.simpleMessage("인증서"),
     "cfAddDomain": MessageLookupByLibrary.simpleMessage("도메인 추가"),
+    "cfAppliedCount": m4,
     "cfAppliedHint": MessageLookupByLibrary.simpleMessage(
       "위 후보 도메인의 매핑입니다. 적용하면 약 2초 후 프로필이 다시 적용되며 진행 중인 연결이 끊깁니다. 다른 도메인의 hosts 항목은 일반 설정에 있습니다.",
     ),
     "cfAppliedHosts": MessageLookupByLibrary.simpleMessage("활성 hosts 매핑"),
     "cfClearAll": MessageLookupByLibrary.simpleMessage("모두 지우기"),
-    "cfClearAllTip": m4,
-    "cfDetect": MessageLookupByLibrary.simpleMessage("판별"),
+    "cfClearAllTip": m5,
     "cfDetectFailed": MessageLookupByLibrary.simpleMessage("판별 실패"),
-    "cfDetecting": MessageLookupByLibrary.simpleMessage("판별 중…"),
+    "cfDetecting": MessageLookupByLibrary.simpleMessage("판별 및 테스트 중…"),
     "cfDomains": MessageLookupByLibrary.simpleMessage("후보 도메인"),
     "cfFilter": MessageLookupByLibrary.simpleMessage("필터"),
     "cfFilterDesc": MessageLookupByLibrary.simpleMessage(
@@ -441,7 +440,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cfHowItWorks": MessageLookupByLibrary.simpleMessage("동작 원리"),
     "cfInRanges": MessageLookupByLibrary.simpleMessage("Cloudflare 대역"),
-    "cfMatchedFilter": m5,
+    "cfMatchedFilter": m6,
     "cfMaxDelay": MessageLookupByLibrary.simpleMessage("최대 지연 (ms)"),
     "cfMaxLoss": MessageLookupByLibrary.simpleMessage("최대 손실률 (%)"),
     "cfMinDelay": MessageLookupByLibrary.simpleMessage("최소 지연 (ms)"),
@@ -451,7 +450,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfOptimizeDesc": MessageLookupByLibrary.simpleMessage(
       "Cloudflare 공식 대역을 스캔해 회선에 가장 빠른 입구를 찾고, 선택한 도메인의 입구를 앱의 hosts 오버라이드로 고정합니다. 바뀌는 것은 입구 IP뿐이며 TLS SNI와 Host 헤더는 도메인을 유지합니다. 결과는 네트워크 상황에 따라 달라지므로 주기적으로 다시 스캔하세요.",
     ),
-    "cfOutsideRangesTip": m6,
     "cfRanges": MessageLookupByLibrary.simpleMessage("Cloudflare 대역"),
     "cfRangesBuiltIn": MessageLookupByLibrary.simpleMessage(
       "내장 대역이며 Cloudflare에서 아직 업데이트하지 않았습니다",
@@ -461,7 +459,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfRangesUpdatedAt": m8,
     "cfRangesUpdating": MessageLookupByLibrary.simpleMessage("업데이트 중…"),
     "cfSampleCount": MessageLookupByLibrary.simpleMessage("샘플 수 (1-4096)"),
-    "cfScanFirst": MessageLookupByLibrary.simpleMessage("먼저 스캔을 실행하세요"),
     "cfScanResult": MessageLookupByLibrary.simpleMessage("스캔 결과"),
     "cfScanSampled": m9,
     "cfScanSettings": MessageLookupByLibrary.simpleMessage("스캔"),
@@ -469,8 +466,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfSelectDomainFirst": MessageLookupByLibrary.simpleMessage(
       "먼저 도메인을 하나 이상 선택하세요",
     ),
+    "cfSkippedDomainsTip": m10,
     "cfStartScan": MessageLookupByLibrary.simpleMessage("스캔 시작"),
-    "cfUndetectedTip": m10,
+    "cfTestAndApply": MessageLookupByLibrary.simpleMessage("테스트 후 적용"),
     "changeProxyFailedTip": MessageLookupByLibrary.simpleMessage(
       "프록시를 전환하지 못해 이전 선택을 복원했습니다",
     ),

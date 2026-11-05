@@ -40,6 +40,10 @@ const (
 	cfDetectMinTimeout     = 1000
 	cfDetectMaxTimeout     = 30000
 
+	// The resolver answers with a handful of addresses per domain; a cap keeps
+	// one broken or hostile answer from ballooning the probe count.
+	cfTestMaxIpsPerDomain = 16
+
 	// Selection weight per prefix, capped so a huge IPv6 range cannot overflow
 	// the running total; the offset inside a prefix still uses the real size.
 	cfScanWeightCap = uint64(1) << 40
@@ -89,6 +93,29 @@ type CfDetectItem struct {
 
 type CfDetectResult struct {
 	Results []CfDetectItem `json:"results"`
+}
+
+type CfTestIpsTarget struct {
+	Domain string   `json:"domain"`
+	Ips    []string `json:"ips"`
+}
+
+type CfTestIpsParams struct {
+	Targets     []CfTestIpsTarget `json:"targets"`
+	Port        string            `json:"port"`
+	Concurrency int               `json:"concurrency"`
+	TestCount   int               `json:"test-count"`
+	Timeout     int64             `json:"timeout"`
+}
+
+type CfTestIpsItem struct {
+	Domain  string       `json:"domain"`
+	Results []CfScanItem `json:"results"`
+}
+
+type CfTestIpsResult struct {
+	Results   []CfTestIpsItem `json:"results"`
+	ElapsedMs int64           `json:"elapsed-ms"`
 }
 
 type cfSample struct {
@@ -186,6 +213,96 @@ func handleCfDetect(params *CfDetectParams) (*CfDetectResult, error) {
 	return &CfDetectResult{Results: items}, nil
 }
 
+// handleCfTestIps measures the addresses a domain's own DNS answered with, the
+// way a node's dial would reach them. The scanner samples Cloudflare's ranges;
+// this covers the domains that live elsewhere.
+func handleCfTestIps(params *CfTestIpsParams) (*CfTestIpsResult, error) {
+	port, err := cfPort(params.Port)
+	if err != nil {
+		return nil, &MethodError{Code: "invalid_arguments", Message: err.Error()}
+	}
+	concurrency := cfClampInt(params.Concurrency, 1, cfScanMaxConcurrency, cfScanDefaultConcurrency)
+	attempts := cfClampInt(params.TestCount, 1, cfScanMaxTestCount, cfScanDefaultTestCount)
+	perDial := time.Duration(cfClampInt64(params.Timeout, cfScanMinTimeout, cfScanMaxTimeout, cfScanDefaultTimeout)) * time.Millisecond
+
+	// Domains are deduped in the caller's order; one whose answers all fail to
+	// parse is dropped, the rest are capped per domain.
+	order := make([]string, 0, len(params.Targets))
+	byDomain := make(map[string][]netip.Addr, len(params.Targets))
+	seen := make(map[string]struct{}, len(params.Targets))
+	for _, target := range params.Targets {
+		if target.Domain == "" {
+			continue
+		}
+		if _, dup := seen[target.Domain]; dup {
+			continue
+		}
+		if len(order) == cfDetectMaxDomains {
+			break
+		}
+		addrs := make([]netip.Addr, 0, cfTestMaxIpsPerDomain)
+		for _, raw := range target.Ips {
+			if len(addrs) == cfTestMaxIpsPerDomain {
+				break
+			}
+			addr, err := netip.ParseAddr(raw)
+			if err != nil {
+				continue
+			}
+			addrs = append(addrs, addr.Unmap())
+		}
+		if len(addrs) == 0 {
+			continue
+		}
+		seen[target.Domain] = struct{}{}
+		order = append(order, target.Domain)
+		byDomain[target.Domain] = addrs
+	}
+	if len(order) == 0 {
+		return nil, &MethodError{Code: "invalid_arguments", Message: "no usable address in targets"}
+	}
+
+	total := 0
+	for _, addrs := range byDomain {
+		total += len(addrs)
+	}
+	flat := make([]netip.Addr, 0, total)
+	tags := make([]string, 0, total)
+	for _, domain := range order {
+		for _, addr := range byDomain[domain] {
+			flat = append(flat, addr)
+			tags = append(tags, domain)
+		}
+	}
+
+	rounds := (len(flat) + concurrency - 1) / concurrency
+	deadline := time.Duration(rounds)*perDial*time.Duration(attempts) + 5*time.Second
+	if deadline > cfScanOverallCap {
+		deadline = cfScanOverallCap
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), deadline)
+	defer cancel()
+
+	started := time.Now()
+	samples := cfProbeAll(ctx, dialer.NewDialer(), flat, port, attempts, concurrency, perDial)
+
+	grouped := make(map[string][]cfSample, len(order))
+	for index, sample := range samples {
+		grouped[tags[index]] = append(grouped[tags[index]], sample)
+	}
+	items := make([]CfTestIpsItem, 0, len(order))
+	for _, domain := range order {
+		items = append(items, CfTestIpsItem{
+			Domain:  domain,
+			Results: cfItemsFromSamples(grouped[domain]),
+		})
+	}
+	return &CfTestIpsResult{
+		Results:   items,
+		ElapsedMs: time.Since(started).Milliseconds(),
+	}, nil
+}
+
 // cfDetectDomain resolves a host the way a proxy node's dial would, so the
 // answer covers the app's hosts entries and the configured server resolver
 // before falling back to system DNS.
@@ -281,30 +398,46 @@ func probeCfAddress(ctx context.Context, d dialer.NetDialer, addr netip.Addr, po
 }
 
 func filterCfSamples(samples []cfSample, params *CfScanParams) []CfScanItem {
+	converted := cfItemsFromSamples(samples)
+	items := make([]CfScanItem, 0, len(converted))
+	for _, item := range converted {
+		if params.MaxLossRate > 0 && item.LossRate > params.MaxLossRate {
+			continue
+		}
+		if params.MinDelay > 0 && item.DelayMs < params.MinDelay {
+			continue
+		}
+		if params.MaxDelay > 0 && item.DelayMs > params.MaxDelay {
+			continue
+		}
+		items = append(items, item)
+	}
+	return items
+}
+
+// cfItemsFromSamples converts the measured samples, dead addresses dropped and
+// the rest in the loss-first order. No bounds: the caller filters.
+func cfItemsFromSamples(samples []cfSample) []CfScanItem {
 	items := make([]CfScanItem, 0, len(samples))
 	for _, sample := range samples {
 		if sample.recv == 0 {
-			continue
-		}
-		lossRate := 1 - float64(sample.recv)/float64(sample.sent)
-		if params.MaxLossRate > 0 && lossRate > params.MaxLossRate {
-			continue
-		}
-		delay := (sample.delay / time.Duration(sample.recv)).Milliseconds()
-		if params.MinDelay > 0 && delay < params.MinDelay {
-			continue
-		}
-		if params.MaxDelay > 0 && delay > params.MaxDelay {
 			continue
 		}
 		items = append(items, CfScanItem{
 			IP:       sample.ip.String(),
 			Sent:     sample.sent,
 			Recv:     sample.recv,
-			LossRate: lossRate,
-			DelayMs:  delay,
+			LossRate: 1 - float64(sample.recv)/float64(sample.sent),
+			DelayMs:  (sample.delay / time.Duration(sample.recv)).Milliseconds(),
 		})
 	}
+	sortCfItems(items)
+	return items
+}
+
+// The Core's answer order: the least loss first, then the fastest, then the
+// address, so the ranking is stable.
+func sortCfItems(items []CfScanItem) {
 	sort.Slice(items, func(i, j int) bool {
 		if items[i].LossRate != items[j].LossRate {
 			return items[i].LossRate < items[j].LossRate
@@ -314,7 +447,6 @@ func filterCfSamples(samples []cfSample, params *CfScanParams) []CfScanItem {
 		}
 		return items[i].IP < items[j].IP
 	})
-	return items
 }
 
 func parseCfRanges(ranges []string) ([]netip.Prefix, error) {

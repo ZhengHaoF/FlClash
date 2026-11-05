@@ -75,6 +75,10 @@ const (
 	cfScanMethod   CoreMethod = "cf.scan"
 	cfDetectMethod CoreMethod = "cf.detect"
 
+	cfTestIpsMethod CoreMethod = "cf.testIps"
+
+	cfResolveMethod CoreMethod = "cf.resolve"
+
 	mitmCertificateMethod         CoreMethod = "mitm.certificate"
 	mitmGenerateCertificateMethod CoreMethod = "mitm.generateCertificate"
 	mitmValidateMethod            CoreMethod = "mitm.validate"

@@ -6802,7 +6802,7 @@ $ProfileOverridesCopyWith<$Res> get overrides {
 /// @nodoc
 mixin _$CfOptimizeState {
 
- bool get scanning; bool get detecting; bool get updatingRanges; String? get error; String? get rangesError; CfScanResult? get scanResult; DateTime? get scannedAt; Map<String, CfDetectItem> get detectResults;
+ bool get scanning; bool get detecting; bool get updatingRanges; String? get error; String? get rangesError; CfScanResult? get scanResult; DateTime? get scannedAt; Map<String, CfDetectItem> get detectResults; Map<String, List<CfScanItem>> get testResults;
 /// Create a copy of CfOptimizeState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -6814,20 +6814,20 @@ $CfOptimizeStateCopyWith<CfOptimizeState> get copyWith => _$CfOptimizeStateCopyW
 @override
 bool operator ==(Object other) {
   final _this = this as CfOptimizeState;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CfOptimizeState&&(identical(other.scanning, _this.scanning) || other.scanning == _this.scanning)&&(identical(other.detecting, _this.detecting) || other.detecting == _this.detecting)&&(identical(other.updatingRanges, _this.updatingRanges) || other.updatingRanges == _this.updatingRanges)&&(identical(other.error, _this.error) || other.error == _this.error)&&(identical(other.rangesError, _this.rangesError) || other.rangesError == _this.rangesError)&&(identical(other.scanResult, _this.scanResult) || other.scanResult == _this.scanResult)&&(identical(other.scannedAt, _this.scannedAt) || other.scannedAt == _this.scannedAt)&&const DeepCollectionEquality().equals(other.detectResults, _this.detectResults));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CfOptimizeState&&(identical(other.scanning, _this.scanning) || other.scanning == _this.scanning)&&(identical(other.detecting, _this.detecting) || other.detecting == _this.detecting)&&(identical(other.updatingRanges, _this.updatingRanges) || other.updatingRanges == _this.updatingRanges)&&(identical(other.error, _this.error) || other.error == _this.error)&&(identical(other.rangesError, _this.rangesError) || other.rangesError == _this.rangesError)&&(identical(other.scanResult, _this.scanResult) || other.scanResult == _this.scanResult)&&(identical(other.scannedAt, _this.scannedAt) || other.scannedAt == _this.scannedAt)&&const DeepCollectionEquality().equals(other.detectResults, _this.detectResults)&&const DeepCollectionEquality().equals(other.testResults, _this.testResults));
 }
 
 
 @override
 int get hashCode {
   final _this = this as CfOptimizeState;
-  return Object.hash(runtimeType,_this.scanning,_this.detecting,_this.updatingRanges,_this.error,_this.rangesError,_this.scanResult,_this.scannedAt,const DeepCollectionEquality().hash(_this.detectResults));
+  return Object.hash(runtimeType,_this.scanning,_this.detecting,_this.updatingRanges,_this.error,_this.rangesError,_this.scanResult,_this.scannedAt,const DeepCollectionEquality().hash(_this.detectResults),const DeepCollectionEquality().hash(_this.testResults));
 }
 
 @override
 String toString() {
   final _this = this as CfOptimizeState;
-  return 'CfOptimizeState(scanning: ${_this.scanning}, detecting: ${_this.detecting}, updatingRanges: ${_this.updatingRanges}, error: ${_this.error}, rangesError: ${_this.rangesError}, scanResult: ${_this.scanResult}, scannedAt: ${_this.scannedAt}, detectResults: ${_this.detectResults})';
+  return 'CfOptimizeState(scanning: ${_this.scanning}, detecting: ${_this.detecting}, updatingRanges: ${_this.updatingRanges}, error: ${_this.error}, rangesError: ${_this.rangesError}, scanResult: ${_this.scanResult}, scannedAt: ${_this.scannedAt}, detectResults: ${_this.detectResults}, testResults: ${_this.testResults})';
 }
 
 
@@ -6838,7 +6838,7 @@ abstract mixin class $CfOptimizeStateCopyWith<$Res>  {
   factory $CfOptimizeStateCopyWith(CfOptimizeState value, $Res Function(CfOptimizeState) _then) = _$CfOptimizeStateCopyWithImpl;
 @useResult
 $Res call({
- bool scanning, bool detecting, bool updatingRanges, String? error, String? rangesError, CfScanResult? scanResult, DateTime? scannedAt, Map<String, CfDetectItem> detectResults
+ bool scanning, bool detecting, bool updatingRanges, String? error, String? rangesError, CfScanResult? scanResult, DateTime? scannedAt, Map<String, CfDetectItem> detectResults, Map<String, List<CfScanItem>> testResults
 });
 
 
@@ -6855,7 +6855,7 @@ class _$CfOptimizeStateCopyWithImpl<$Res>
 
 /// Create a copy of CfOptimizeState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? scanning = null,Object? detecting = null,Object? updatingRanges = null,Object? error = freezed,Object? rangesError = freezed,Object? scanResult = freezed,Object? scannedAt = freezed,Object? detectResults = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? scanning = null,Object? detecting = null,Object? updatingRanges = null,Object? error = freezed,Object? rangesError = freezed,Object? scanResult = freezed,Object? scannedAt = freezed,Object? detectResults = null,Object? testResults = null,}) {
   return _then(CfOptimizeState(
 scanning: null == scanning ? _self.scanning : scanning // ignore: cast_nullable_to_non_nullable
 as bool,detecting: null == detecting ? _self.detecting : detecting // ignore: cast_nullable_to_non_nullable
@@ -6865,7 +6865,8 @@ as String?,rangesError: freezed == rangesError ? _self.rangesError : rangesError
 as String?,scanResult: freezed == scanResult ? _self.scanResult : scanResult // ignore: cast_nullable_to_non_nullable
 as CfScanResult?,scannedAt: freezed == scannedAt ? _self.scannedAt : scannedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,detectResults: null == detectResults ? _self.detectResults : detectResults // ignore: cast_nullable_to_non_nullable
-as Map<String, CfDetectItem>,
+as Map<String, CfDetectItem>,testResults: null == testResults ? _self.testResults : testResults // ignore: cast_nullable_to_non_nullable
+as Map<String, List<CfScanItem>>,
   ));
 }
 /// Create a copy of CfOptimizeState
@@ -6962,10 +6963,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool scanning,  bool detecting,  bool updatingRanges,  String? error,  String? rangesError,  CfScanResult? scanResult,  DateTime? scannedAt,  Map<String, CfDetectItem> detectResults)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool scanning,  bool detecting,  bool updatingRanges,  String? error,  String? rangesError,  CfScanResult? scanResult,  DateTime? scannedAt,  Map<String, CfDetectItem> detectResults,  Map<String, List<CfScanItem>> testResults)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CfOptimizeState() when $default != null:
-return $default(_that.scanning,_that.detecting,_that.updatingRanges,_that.error,_that.rangesError,_that.scanResult,_that.scannedAt,_that.detectResults);case _:
+return $default(_that.scanning,_that.detecting,_that.updatingRanges,_that.error,_that.rangesError,_that.scanResult,_that.scannedAt,_that.detectResults,_that.testResults);case _:
   return orElse();
 
 }
@@ -6983,10 +6984,10 @@ return $default(_that.scanning,_that.detecting,_that.updatingRanges,_that.error,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool scanning,  bool detecting,  bool updatingRanges,  String? error,  String? rangesError,  CfScanResult? scanResult,  DateTime? scannedAt,  Map<String, CfDetectItem> detectResults)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool scanning,  bool detecting,  bool updatingRanges,  String? error,  String? rangesError,  CfScanResult? scanResult,  DateTime? scannedAt,  Map<String, CfDetectItem> detectResults,  Map<String, List<CfScanItem>> testResults)  $default,) {final _that = this;
 switch (_that) {
 case _CfOptimizeState():
-return $default(_that.scanning,_that.detecting,_that.updatingRanges,_that.error,_that.rangesError,_that.scanResult,_that.scannedAt,_that.detectResults);case _:
+return $default(_that.scanning,_that.detecting,_that.updatingRanges,_that.error,_that.rangesError,_that.scanResult,_that.scannedAt,_that.detectResults,_that.testResults);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -7003,10 +7004,10 @@ return $default(_that.scanning,_that.detecting,_that.updatingRanges,_that.error,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool scanning,  bool detecting,  bool updatingRanges,  String? error,  String? rangesError,  CfScanResult? scanResult,  DateTime? scannedAt,  Map<String, CfDetectItem> detectResults)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool scanning,  bool detecting,  bool updatingRanges,  String? error,  String? rangesError,  CfScanResult? scanResult,  DateTime? scannedAt,  Map<String, CfDetectItem> detectResults,  Map<String, List<CfScanItem>> testResults)?  $default,) {final _that = this;
 switch (_that) {
 case _CfOptimizeState() when $default != null:
-return $default(_that.scanning,_that.detecting,_that.updatingRanges,_that.error,_that.rangesError,_that.scanResult,_that.scannedAt,_that.detectResults);case _:
+return $default(_that.scanning,_that.detecting,_that.updatingRanges,_that.error,_that.rangesError,_that.scanResult,_that.scannedAt,_that.detectResults,_that.testResults);case _:
   return null;
 
 }
@@ -7018,7 +7019,7 @@ return $default(_that.scanning,_that.detecting,_that.updatingRanges,_that.error,
 
 
 class _CfOptimizeState implements CfOptimizeState {
-  const _CfOptimizeState({this.scanning = false, this.detecting = false, this.updatingRanges = false, this.error, this.rangesError, this.scanResult, this.scannedAt,  Map<String, CfDetectItem> detectResults = const {}}): _detectResults = detectResults;
+  const _CfOptimizeState({this.scanning = false, this.detecting = false, this.updatingRanges = false, this.error, this.rangesError, this.scanResult, this.scannedAt,  Map<String, CfDetectItem> detectResults = const {},  Map<String, List<CfScanItem>> testResults = const {}}): _detectResults = detectResults,_testResults = testResults;
   
 
 @override@JsonKey() final  bool scanning;
@@ -7035,6 +7036,13 @@ class _CfOptimizeState implements CfOptimizeState {
   return EqualUnmodifiableMapView(_detectResults);
 }
 
+ final  Map<String, List<CfScanItem>> _testResults;
+@override@JsonKey() Map<String, List<CfScanItem>> get testResults {
+  if (_testResults is EqualUnmodifiableMapView) return _testResults;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_testResults);
+}
+
 
 /// Create a copy of CfOptimizeState
 /// with the given fields replaced by the non-null parameter values.
@@ -7046,18 +7054,18 @@ _$CfOptimizeStateCopyWith<_CfOptimizeState> get copyWith => __$CfOptimizeStateCo
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CfOptimizeState&&(identical(other.scanning, scanning) || other.scanning == scanning)&&(identical(other.detecting, detecting) || other.detecting == detecting)&&(identical(other.updatingRanges, updatingRanges) || other.updatingRanges == updatingRanges)&&(identical(other.error, error) || other.error == error)&&(identical(other.rangesError, rangesError) || other.rangesError == rangesError)&&(identical(other.scanResult, scanResult) || other.scanResult == scanResult)&&(identical(other.scannedAt, scannedAt) || other.scannedAt == scannedAt)&&const DeepCollectionEquality().equals(other.detectResults, _detectResults));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CfOptimizeState&&(identical(other.scanning, scanning) || other.scanning == scanning)&&(identical(other.detecting, detecting) || other.detecting == detecting)&&(identical(other.updatingRanges, updatingRanges) || other.updatingRanges == updatingRanges)&&(identical(other.error, error) || other.error == error)&&(identical(other.rangesError, rangesError) || other.rangesError == rangesError)&&(identical(other.scanResult, scanResult) || other.scanResult == scanResult)&&(identical(other.scannedAt, scannedAt) || other.scannedAt == scannedAt)&&const DeepCollectionEquality().equals(other.detectResults, _detectResults)&&const DeepCollectionEquality().equals(other.testResults, _testResults));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,scanning,detecting,updatingRanges,error,rangesError,scanResult,scannedAt,const DeepCollectionEquality().hash(_detectResults));
+    return Object.hash(runtimeType,scanning,detecting,updatingRanges,error,rangesError,scanResult,scannedAt,const DeepCollectionEquality().hash(_detectResults),const DeepCollectionEquality().hash(_testResults));
 }
 
 @override
 String toString() {
-    return 'CfOptimizeState(scanning: $scanning, detecting: $detecting, updatingRanges: $updatingRanges, error: $error, rangesError: $rangesError, scanResult: $scanResult, scannedAt: $scannedAt, detectResults: $detectResults)';
+    return 'CfOptimizeState(scanning: $scanning, detecting: $detecting, updatingRanges: $updatingRanges, error: $error, rangesError: $rangesError, scanResult: $scanResult, scannedAt: $scannedAt, detectResults: $detectResults, testResults: $testResults)';
 }
 
 
@@ -7068,7 +7076,7 @@ abstract mixin class _$CfOptimizeStateCopyWith<$Res> implements $CfOptimizeState
   factory _$CfOptimizeStateCopyWith(_CfOptimizeState value, $Res Function(_CfOptimizeState) _then) = __$CfOptimizeStateCopyWithImpl;
 @override @useResult
 $Res call({
- bool scanning, bool detecting, bool updatingRanges, String? error, String? rangesError, CfScanResult? scanResult, DateTime? scannedAt, Map<String, CfDetectItem> detectResults
+ bool scanning, bool detecting, bool updatingRanges, String? error, String? rangesError, CfScanResult? scanResult, DateTime? scannedAt, Map<String, CfDetectItem> detectResults, Map<String, List<CfScanItem>> testResults
 });
 
 
@@ -7085,7 +7093,7 @@ class __$CfOptimizeStateCopyWithImpl<$Res>
 
 /// Create a copy of CfOptimizeState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? scanning = null,Object? detecting = null,Object? updatingRanges = null,Object? error = freezed,Object? rangesError = freezed,Object? scanResult = freezed,Object? scannedAt = freezed,Object? detectResults = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? scanning = null,Object? detecting = null,Object? updatingRanges = null,Object? error = freezed,Object? rangesError = freezed,Object? scanResult = freezed,Object? scannedAt = freezed,Object? detectResults = null,Object? testResults = null,}) {
   return _then(_CfOptimizeState(
 scanning: null == scanning ? _self.scanning : scanning // ignore: cast_nullable_to_non_nullable
 as bool,detecting: null == detecting ? _self.detecting : detecting // ignore: cast_nullable_to_non_nullable
@@ -7095,7 +7103,8 @@ as String?,rangesError: freezed == rangesError ? _self.rangesError : rangesError
 as String?,scanResult: freezed == scanResult ? _self.scanResult : scanResult // ignore: cast_nullable_to_non_nullable
 as CfScanResult?,scannedAt: freezed == scannedAt ? _self.scannedAt : scannedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,detectResults: null == detectResults ? _self._detectResults : detectResults // ignore: cast_nullable_to_non_nullable
-as Map<String, CfDetectItem>,
+as Map<String, CfDetectItem>,testResults: null == testResults ? _self._testResults : testResults // ignore: cast_nullable_to_non_nullable
+as Map<String, List<CfScanItem>>,
   ));
 }
 

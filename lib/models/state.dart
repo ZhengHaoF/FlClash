@@ -276,5 +276,6 @@ abstract class CfOptimizeState with _$CfOptimizeState {
     CfScanResult? scanResult,
     DateTime? scannedAt,
     @Default({}) Map<String, CfDetectItem> detectResults,
+    @Default({}) Map<String, List<CfScanItem>> testResults,
   }) = _CfOptimizeState;
 }

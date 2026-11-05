@@ -30,13 +30,12 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m3(count, skipped) =>
       "${count} à ajouter, ${skipped} ignorés car déjà présents";
 
-  static String m4(count) =>
+  static String m4(count) => "${count} domaines appliqués";
+
+  static String m5(count) =>
       "${count} mappages seront supprimés. Les autres entrées hosts restent.";
 
-  static String m5(count) => "${count} retenues";
-
-  static String m6(domains) =>
-      "Ces domaines se résolvent hors des plages Cloudflare : une entrée fixée risque de ne pas les servir (${domains}). Appliquer quand même ?";
+  static String m6(count) => "${count} retenues";
 
   static String m7(count) => "${count} plages";
 
@@ -45,7 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m9(sampled) => "${sampled} échantillonnées";
 
   static String m10(domains) =>
-      "Ces domaines n\'ont pas encore été détectés : rien ne confirme qu\'ils sont servis par Cloudflare (${domains}). Appliquer quand même ?";
+      "Aucune adresse joignable n\'a été mesurée pour ces domaines, elles ont été ignorées : ${domains}";
 
   static String m11(detail) => "Impossible d’effacer les données : ${detail}";
 
@@ -533,6 +532,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "certificate": MessageLookupByLibrary.simpleMessage("Certificat"),
     "cfAddDomain": MessageLookupByLibrary.simpleMessage("Ajouter un domaine"),
+    "cfAppliedCount": m4,
     "cfAppliedHint": MessageLookupByLibrary.simpleMessage(
       "Mappages des domaines candidats ci-dessus. L\'application relance le profil en deux secondes environ et interrompt les connexions en cours ; les autres entrées hosts restent dans les réglages généraux.",
     ),
@@ -540,12 +540,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "Mappages hosts actifs",
     ),
     "cfClearAll": MessageLookupByLibrary.simpleMessage("Tout effacer"),
-    "cfClearAllTip": m4,
-    "cfDetect": MessageLookupByLibrary.simpleMessage("Détecter"),
+    "cfClearAllTip": m5,
     "cfDetectFailed": MessageLookupByLibrary.simpleMessage(
       "Échec de la détection",
     ),
-    "cfDetecting": MessageLookupByLibrary.simpleMessage("Détection…"),
+    "cfDetecting": MessageLookupByLibrary.simpleMessage("Détection et test…"),
     "cfDomains": MessageLookupByLibrary.simpleMessage("Domaines candidats"),
     "cfFilter": MessageLookupByLibrary.simpleMessage("Filtre"),
     "cfFilterDesc": MessageLookupByLibrary.simpleMessage(
@@ -553,7 +552,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cfHowItWorks": MessageLookupByLibrary.simpleMessage("Fonctionnement"),
     "cfInRanges": MessageLookupByLibrary.simpleMessage("Plage Cloudflare"),
-    "cfMatchedFilter": m5,
+    "cfMatchedFilter": m6,
     "cfMaxDelay": MessageLookupByLibrary.simpleMessage("Latence max (ms)"),
     "cfMaxLoss": MessageLookupByLibrary.simpleMessage("Perte max (%)"),
     "cfMinDelay": MessageLookupByLibrary.simpleMessage("Latence min (ms)"),
@@ -567,7 +566,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfOptimizeDesc": MessageLookupByLibrary.simpleMessage(
       "Scanne les plages annoncées par Cloudflare pour trouver les entrées les plus rapides de votre ligne, puis fixe les entrées des domaines sélectionnés via les surcharges hosts de l\'app. Seule l\'IP d\'entrée change ; le SNI TLS et l\'en-tête Host conservent le domaine. Les résultats vieillissent avec le réseau : rescannez régulièrement.",
     ),
-    "cfOutsideRangesTip": m6,
     "cfRanges": MessageLookupByLibrary.simpleMessage("Plages Cloudflare"),
     "cfRangesBuiltIn": MessageLookupByLibrary.simpleMessage(
       "Plages intégrées ; pas encore mises à jour depuis Cloudflare",
@@ -581,9 +579,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfSampleCount": MessageLookupByLibrary.simpleMessage(
       "Nombre d\'échantillons (1-4096)",
     ),
-    "cfScanFirst": MessageLookupByLibrary.simpleMessage(
-      "Lancez d\'abord une analyse",
-    ),
     "cfScanResult": MessageLookupByLibrary.simpleMessage("Résultats"),
     "cfScanSampled": m9,
     "cfScanSettings": MessageLookupByLibrary.simpleMessage("Analyse"),
@@ -591,8 +586,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfSelectDomainFirst": MessageLookupByLibrary.simpleMessage(
       "Sélectionnez d\'abord au moins un domaine",
     ),
+    "cfSkippedDomainsTip": m10,
     "cfStartScan": MessageLookupByLibrary.simpleMessage("Lancer l\'analyse"),
-    "cfUndetectedTip": m10,
+    "cfTestAndApply": MessageLookupByLibrary.simpleMessage(
+      "Tester et appliquer",
+    ),
     "changeProxyFailedTip": MessageLookupByLibrary.simpleMessage(
       "Échec du changement de proxy ; la sélection précédente a été rétablie",
     ),
@@ -1266,9 +1264,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "installCertificateSuccess": MessageLookupByLibrary.simpleMessage(
       "Certificat installé",
     ),
-    "installedAppsPermissionDeniedMessage": MessageLookupByLibrary.simpleMessage(
-      "L’autorisation de la liste des apps a été refusée ; les apps installées ne peuvent donc pas être listées. Veuillez l’accorder manuellement dans les réglages du système.",
-    ),
+    "installedAppsPermissionDeniedMessage":
+        MessageLookupByLibrary.simpleMessage(
+          "L’autorisation de la liste des apps a été refusée ; les apps installées ne peuvent donc pas être listées. Veuillez l’accorder manuellement dans les réglages du système.",
+        ),
     "installedAppsPermissionDesc": MessageLookupByLibrary.simpleMessage(
       "Ce système masque la liste des apps installées tant que l’autorisation n’est pas accordée. Accordez-la pour configurer le proxy par app.",
     ),

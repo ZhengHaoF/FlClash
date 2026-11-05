@@ -203,6 +203,51 @@ func TestCfProbeAllReturnsWhenTheDeadlineCutsTheScan(t *testing.T) {
 	}
 }
 
+func TestCfTestIpsLoopback(t *testing.T) {
+	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatalf("listen: %v", err)
+	}
+	defer listener.Close()
+	port := listener.Addr().(*net.TCPAddr).Port
+
+	result, err := handleCfTestIps(&CfTestIpsParams{
+		Targets: []CfTestIpsTarget{
+			{Domain: "a.example", Ips: []string{"127.0.0.1", "127.0.0.2"}},
+			{Domain: "b.example", Ips: []string{"not-an-ip", "127.0.0.1"}},
+			{Domain: "c.example", Ips: []string{"127.0.0.2"}},
+			{Domain: "a.example", Ips: []string{"127.0.0.1"}},
+		},
+		Port:        strconv.Itoa(port),
+		Concurrency: 2,
+		TestCount:   2,
+		Timeout:     1000,
+	})
+	if err != nil {
+		t.Fatalf("handleCfTestIps: %v", err)
+	}
+	if len(result.Results) != 3 {
+		t.Fatalf("got %d domains, want 3 with the duplicate domain folded", len(result.Results))
+	}
+	first := result.Results[0]
+	if first.Domain != "a.example" || len(first.Results) != 1 || first.Results[0].IP != "127.0.0.1" {
+		t.Fatalf("a.example misreported: %+v", first)
+	}
+	if first.Results[0].Recv != 2 {
+		t.Fatalf("127.0.0.1 recv %d, want 2", first.Results[0].Recv)
+	}
+	second := result.Results[1]
+	if second.Domain != "b.example" || len(second.Results) != 1 || second.Results[0].IP != "127.0.0.1" {
+		t.Fatalf("b.example misreported: %+v", second)
+	}
+	// The refused address keeps the domain in the answer, so the caller can
+	// tell a dead answer apart from a domain it never asked about.
+	third := result.Results[2]
+	if third.Domain != "c.example" || len(third.Results) != 0 {
+		t.Fatalf("c.example misreported: %+v", third)
+	}
+}
+
 func TestCfScanInvalidArguments(t *testing.T) {
 	if _, err := handleCfScan(&CfScanParams{Ranges: []string{"104.16.0.0/13"}, Port: "0"}); err == nil {
 		t.Fatal("expected an error for port 0")
@@ -215,6 +260,20 @@ func TestCfScanInvalidArguments(t *testing.T) {
 	}
 	if _, err := handleCfDetect(&CfDetectParams{Ranges: []string{"1.0.0.0/24"}}); err == nil {
 		t.Fatal("expected an error for empty domains")
+	}
+	if _, err := handleCfTestIps(&CfTestIpsParams{Port: "443"}); err == nil {
+		t.Fatal("expected an error for empty targets")
+	}
+	if _, err := handleCfTestIps(&CfTestIpsParams{
+		Targets: []CfTestIpsTarget{{Domain: "a.example", Ips: []string{"nope"}}},
+		Port:    "443",
+	}); err == nil {
+		t.Fatal("expected an error for targets without a usable address")
+	}
+	if _, err := handleCfTestIps(&CfTestIpsParams{
+		Targets: []CfTestIpsTarget{{Domain: "a.example", Ips: []string{"127.0.0.1"}}},
+	}); err == nil {
+		t.Fatal("expected an error for a missing port")
 	}
 }
 

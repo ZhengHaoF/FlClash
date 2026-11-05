@@ -30,13 +30,12 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m3(count, skipped) =>
       "${count} por añadir, ${skipped} omitidos por ya existir";
 
-  static String m4(count) =>
+  static String m4(count) => "Se aplicaron ${count} dominios";
+
+  static String m5(count) =>
       "Se eliminarán ${count} mapeos. Las demás entradas de hosts se mantienen.";
 
-  static String m5(count) => "${count} coinciden";
-
-  static String m6(domains) =>
-      "Estos dominios se resuelven fuera de los rangos de Cloudflare, así que la entrada fijada podría no servirlos: ${domains}. ¿Aplicar igualmente?";
+  static String m6(count) => "${count} coinciden";
 
   static String m7(count) => "${count} rangos";
 
@@ -45,7 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m9(sampled) => "${sampled} muestreadas";
 
   static String m10(domains) =>
-      "Estos dominios aún no se han detectado, nada confirma que los sirva Cloudflare: ${domains}. ¿Aplicar igualmente?";
+      "No se midió una dirección alcanzable para estos dominios, se omitieron: ${domains}";
 
   static String m11(detail) => "No se pudieron borrar los datos: ${detail}";
 
@@ -535,6 +534,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cannotSave": MessageLookupByLibrary.simpleMessage("No se puede guardar"),
     "certificate": MessageLookupByLibrary.simpleMessage("Certificado"),
     "cfAddDomain": MessageLookupByLibrary.simpleMessage("Añadir un dominio"),
+    "cfAppliedCount": m4,
     "cfAppliedHint": MessageLookupByLibrary.simpleMessage(
       "Mapeos de los dominios candidatos de arriba. Aplicarlos vuelve a aplicar el perfil en unos dos segundos e interrumpe las conexiones activas; las demás entradas de hosts siguen en los ajustes generales.",
     ),
@@ -542,10 +542,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Mapeos de hosts activos",
     ),
     "cfClearAll": MessageLookupByLibrary.simpleMessage("Borrar todo"),
-    "cfClearAllTip": m4,
-    "cfDetect": MessageLookupByLibrary.simpleMessage("Detectar"),
+    "cfClearAllTip": m5,
     "cfDetectFailed": MessageLookupByLibrary.simpleMessage("Detección fallida"),
-    "cfDetecting": MessageLookupByLibrary.simpleMessage("Detectando…"),
+    "cfDetecting": MessageLookupByLibrary.simpleMessage("Detección y prueba…"),
     "cfDomains": MessageLookupByLibrary.simpleMessage("Dominios candidatos"),
     "cfFilter": MessageLookupByLibrary.simpleMessage("Filtro"),
     "cfFilterDesc": MessageLookupByLibrary.simpleMessage(
@@ -553,7 +552,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cfHowItWorks": MessageLookupByLibrary.simpleMessage("Cómo funciona"),
     "cfInRanges": MessageLookupByLibrary.simpleMessage("Rango de Cloudflare"),
-    "cfMatchedFilter": m5,
+    "cfMatchedFilter": m6,
     "cfMaxDelay": MessageLookupByLibrary.simpleMessage("Latencia máxima (ms)"),
     "cfMaxLoss": MessageLookupByLibrary.simpleMessage("Pérdida máx (%)"),
     "cfMinDelay": MessageLookupByLibrary.simpleMessage("Latencia mínima (ms)"),
@@ -569,7 +568,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfOptimizeDesc": MessageLookupByLibrary.simpleMessage(
       "Escanea los rangos anunciados por Cloudflare para hallar las entradas más rápidas de tu línea y fija las entradas de los dominios seleccionados mediante las anulaciones de hosts de la app. Solo cambia la IP de entrada; el SNI de TLS y la cabecera Host conservan el dominio. Los resultados envejecen con la red: vuelve a escanear de vez en cuando.",
     ),
-    "cfOutsideRangesTip": m6,
     "cfRanges": MessageLookupByLibrary.simpleMessage("Rangos de Cloudflare"),
     "cfRangesBuiltIn": MessageLookupByLibrary.simpleMessage(
       "Rangos integrados; aún sin actualizar desde Cloudflare",
@@ -579,9 +577,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfRangesUpdatedAt": m8,
     "cfRangesUpdating": MessageLookupByLibrary.simpleMessage("Actualizando…"),
     "cfSampleCount": MessageLookupByLibrary.simpleMessage("Muestras (1-4096)"),
-    "cfScanFirst": MessageLookupByLibrary.simpleMessage(
-      "Ejecuta antes un escaneo",
-    ),
     "cfScanResult": MessageLookupByLibrary.simpleMessage("Resultados"),
     "cfScanSampled": m9,
     "cfScanSettings": MessageLookupByLibrary.simpleMessage("Escaneo"),
@@ -589,8 +584,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfSelectDomainFirst": MessageLookupByLibrary.simpleMessage(
       "Selecciona primero al menos un dominio",
     ),
+    "cfSkippedDomainsTip": m10,
     "cfStartScan": MessageLookupByLibrary.simpleMessage("Iniciar escaneo"),
-    "cfUndetectedTip": m10,
+    "cfTestAndApply": MessageLookupByLibrary.simpleMessage("Probar y aplicar"),
     "changeProxyFailedTip": MessageLookupByLibrary.simpleMessage(
       "No se pudo cambiar de proxy; se ha restaurado la selección anterior",
     ),
@@ -1260,9 +1256,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "installCertificateSuccess": MessageLookupByLibrary.simpleMessage(
       "Certificado instalado",
     ),
-    "installedAppsPermissionDeniedMessage": MessageLookupByLibrary.simpleMessage(
-      "Se denegó el permiso de lista de apps, por lo que no se pueden mostrar las apps instaladas. Concédelo manualmente en los ajustes del sistema.",
-    ),
+    "installedAppsPermissionDeniedMessage":
+        MessageLookupByLibrary.simpleMessage(
+          "Se denegó el permiso de lista de apps, por lo que no se pueden mostrar las apps instaladas. Concédelo manualmente en los ajustes del sistema.",
+        ),
     "installedAppsPermissionDesc": MessageLookupByLibrary.simpleMessage(
       "Este sistema oculta la lista de apps instaladas hasta que se concede el permiso. Autorízalo para configurar el proxy por app.",
     ),

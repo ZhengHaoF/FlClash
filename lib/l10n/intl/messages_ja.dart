@@ -28,12 +28,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(count, skipped) => "${count}件を追加、${skipped}件は既存のためスキップ";
 
-  static String m4(count) => "${count} 件のマッピングを削除します。他の hosts エントリはそのままです。";
+  static String m4(count) => "${count} 件のドメインを適用しました";
 
-  static String m5(count) => "${count} 件が条件一致";
+  static String m5(count) => "${count} 件のマッピングを削除します。他の hosts エントリはそのままです。";
 
-  static String m6(domains) =>
-      "次のドメインは Cloudflare のセグメント外に解決されるため、入口 IP を固定すると接続できなくなる可能性があります：${domains}。それでも適用しますか？";
+  static String m6(count) => "${count} 件が条件一致";
 
   static String m7(count) => "${count} 件のセグメント";
 
@@ -42,7 +41,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m9(sampled) => "${sampled} 件サンプリング";
 
   static String m10(domains) =>
-      "次のドメインはまだ検出されていないため、Cloudflare のセグメントかどうか確認できません：${domains}。それでも適用しますか？";
+      "次のドメインは到達できるアドレスが測定できなかったため、スキップしました：${domains}";
 
   static String m11(detail) => "データを消去できませんでした：${detail}";
 
@@ -431,15 +430,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "cannotSave": MessageLookupByLibrary.simpleMessage("保存できません"),
     "certificate": MessageLookupByLibrary.simpleMessage("証明書"),
     "cfAddDomain": MessageLookupByLibrary.simpleMessage("ドメインを追加"),
+    "cfAppliedCount": m4,
     "cfAppliedHint": MessageLookupByLibrary.simpleMessage(
       "上の候補ドメインのマッピングです。適用すると約2秒後にプロファイルが再適用され、進行中の接続は中断されます。他のドメインの hosts エントリは一般設定にあります。",
     ),
     "cfAppliedHosts": MessageLookupByLibrary.simpleMessage("有効な hosts マッピング"),
     "cfClearAll": MessageLookupByLibrary.simpleMessage("すべて削除"),
-    "cfClearAllTip": m4,
-    "cfDetect": MessageLookupByLibrary.simpleMessage("判定"),
+    "cfClearAllTip": m5,
     "cfDetectFailed": MessageLookupByLibrary.simpleMessage("判定に失敗しました"),
-    "cfDetecting": MessageLookupByLibrary.simpleMessage("判定中…"),
+    "cfDetecting": MessageLookupByLibrary.simpleMessage("判定と測定中…"),
     "cfDomains": MessageLookupByLibrary.simpleMessage("候補ドメイン"),
     "cfFilter": MessageLookupByLibrary.simpleMessage("フィルター"),
     "cfFilterDesc": MessageLookupByLibrary.simpleMessage(
@@ -447,7 +446,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cfHowItWorks": MessageLookupByLibrary.simpleMessage("仕組み"),
     "cfInRanges": MessageLookupByLibrary.simpleMessage("Cloudflare セグメント"),
-    "cfMatchedFilter": m5,
+    "cfMatchedFilter": m6,
     "cfMaxDelay": MessageLookupByLibrary.simpleMessage("最大レイテンシ (ms)"),
     "cfMaxLoss": MessageLookupByLibrary.simpleMessage("最大損失率 (%)"),
     "cfMinDelay": MessageLookupByLibrary.simpleMessage("最小レイテンシ (ms)"),
@@ -457,7 +456,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfOptimizeDesc": MessageLookupByLibrary.simpleMessage(
       "Cloudflare の公式セグメントをスキャンして回線に最速の入口を見つけ、選択したドメインの入口をアプリの hosts オーバーライドで固定します。変わるのは入口 IP のみで、TLS SNI と Host ヘッダーはドメインのままです。結果はネットワーク状況で変わるため、定期的に再スキャンしてください。",
     ),
-    "cfOutsideRangesTip": m6,
     "cfRanges": MessageLookupByLibrary.simpleMessage("Cloudflare セグメント"),
     "cfRangesBuiltIn": MessageLookupByLibrary.simpleMessage(
       "内蔵セグメント（Cloudflare から未更新）",
@@ -467,7 +465,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfRangesUpdatedAt": m8,
     "cfRangesUpdating": MessageLookupByLibrary.simpleMessage("更新中…"),
     "cfSampleCount": MessageLookupByLibrary.simpleMessage("サンプル数 (1-4096)"),
-    "cfScanFirst": MessageLookupByLibrary.simpleMessage("先にスキャンを実行してください"),
     "cfScanResult": MessageLookupByLibrary.simpleMessage("スキャン結果"),
     "cfScanSampled": m9,
     "cfScanSettings": MessageLookupByLibrary.simpleMessage("スキャン"),
@@ -475,8 +472,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "cfSelectDomainFirst": MessageLookupByLibrary.simpleMessage(
       "先にドメインを 1 つ以上選択してください",
     ),
+    "cfSkippedDomainsTip": m10,
     "cfStartScan": MessageLookupByLibrary.simpleMessage("スキャン開始"),
-    "cfUndetectedTip": m10,
+    "cfTestAndApply": MessageLookupByLibrary.simpleMessage("測定して適用"),
     "changeProxyFailedTip": MessageLookupByLibrary.simpleMessage(
       "プロキシの切り替えに失敗したため、前回の選択に戻しました",
     ),

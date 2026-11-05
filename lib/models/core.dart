@@ -474,6 +474,86 @@ abstract class CfDetectResult with _$CfDetectResult {
 }
 
 @freezed
+abstract class CfTestIpsTarget with _$CfTestIpsTarget {
+  const factory CfTestIpsTarget({
+    required String domain,
+    @Default([]) List<String> ips,
+  }) = _CfTestIpsTarget;
+
+  factory CfTestIpsTarget.fromJson(Map<String, Object?> json) =>
+      _$CfTestIpsTargetFromJson(json);
+}
+
+@freezed
+abstract class CfTestIpsParams with _$CfTestIpsParams {
+  const factory CfTestIpsParams({
+    @Default([]) List<CfTestIpsTarget> targets,
+    required String port,
+    @Default(0) int concurrency,
+    @JsonKey(name: 'test-count') @Default(0) int testCount,
+    @Default(0) int timeout,
+  }) = _CfTestIpsParams;
+
+  factory CfTestIpsParams.fromJson(Map<String, Object?> json) =>
+      _$CfTestIpsParamsFromJson(json);
+}
+
+@freezed
+abstract class CfTestIpsItem with _$CfTestIpsItem {
+  const factory CfTestIpsItem({
+    required String domain,
+    @Default([]) List<CfScanItem> results,
+  }) = _CfTestIpsItem;
+
+  factory CfTestIpsItem.fromJson(Map<String, Object?> json) =>
+      _$CfTestIpsItemFromJson(json);
+}
+
+@freezed
+abstract class CfTestIpsResult with _$CfTestIpsResult {
+  const factory CfTestIpsResult({
+    @Default([]) List<CfTestIpsItem> results,
+    @JsonKey(name: 'elapsed-ms') @Default(0) int elapsedMs,
+  }) = _CfTestIpsResult;
+
+  factory CfTestIpsResult.fromJson(Map<String, Object?> json) =>
+      _$CfTestIpsResultFromJson(json);
+}
+
+@freezed
+abstract class CfResolveParams with _$CfResolveParams {
+  const factory CfResolveParams({
+    @Default([]) List<String> domains,
+    @Default([]) List<String> nameservers,
+    @Default(0) int timeout,
+  }) = _CfResolveParams;
+
+  factory CfResolveParams.fromJson(Map<String, Object?> json) =>
+      _$CfResolveParamsFromJson(json);
+}
+
+@freezed
+abstract class CfResolveItem with _$CfResolveItem {
+  const factory CfResolveItem({
+    required String domain,
+    @Default([]) List<String> ips,
+    String? error,
+  }) = _CfResolveItem;
+
+  factory CfResolveItem.fromJson(Map<String, Object?> json) =>
+      _$CfResolveItemFromJson(json);
+}
+
+@freezed
+abstract class CfResolveResult with _$CfResolveResult {
+  const factory CfResolveResult({@Default([]) List<CfResolveItem> results}) =
+      _CfResolveResult;
+
+  factory CfResolveResult.fromJson(Map<String, Object?> json) =>
+      _$CfResolveResultFromJson(json);
+}
+
+@freezed
 abstract class ServiceCheckParams with _$ServiceCheckParams {
   const factory ServiceCheckParams({
     @JsonKey(name: 'proxy-name') @Default('') String proxyName,

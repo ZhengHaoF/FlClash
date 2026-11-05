@@ -41,7 +41,7 @@ final class CfOptimizeProvider
   }
 }
 
-String _$cfOptimizeHash() => r'f249d3ca8d00bff46fab12b4380bd464982bc330';
+String _$cfOptimizeHash() => r'526162b479eb2758bc9f683734fccef506499e23';
 
 abstract class _$CfOptimize extends $Notifier<CfOptimizeState> {
   CfOptimizeState build();
